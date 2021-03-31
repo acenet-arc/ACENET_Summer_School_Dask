@@ -1,4 +1,23 @@
-[![Build Status](https://travis-ci.org/carpentries/lesson-example.svg?branch=gh-pages)](https://travis-ci.org/carpentries/lesson-example)
+ACENET
+======
+
+# creating a new lesson from ACENET's template
+
+# Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask
+
+# create new repo with same name
+$ mkdir ACENET_Sumer_School_Dask
+$ cd ACENET_Sumer_School_Dask
+$ git init
+
+# add github repo as remote
+$ git remote add origin https://github.com/acenet-arc/ACENET_Sumer_School_Dask.git
+
+# add git remote for lesson template
+$ git remote add template https://github.com/acenet-arc/ACENET_CC_branded_SWC_lesson_template.git
+
+#pull down the template
+$ git pull template gh-pages
 
 lesson-example
 ==============
