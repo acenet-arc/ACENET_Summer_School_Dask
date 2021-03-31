@@ -4,7 +4,7 @@ ACENET Sepcific
 ## Creating a new lesson from ACENET's template
 <ol>
 <li>Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask</li>
-<li markdown="true">create new repo with same name
+<li markdown=1>create new repo with same name
 ~~~
 $ mkdir ACENET_Sumer_School_Dask
 $ cd ACENET_Sumer_School_Dask
