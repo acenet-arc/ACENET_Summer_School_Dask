@@ -1,14 +1,16 @@
-ACENET
-======
+ACENET Sepcific
+===============
 
-# creating a new lesson from ACENET's template
+## Creating a new lesson from ACENET's template
 
-# Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask
+1. Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask
 
-# create new repo with same name
+2. create new repo with same name
+~~~
 $ mkdir ACENET_Sumer_School_Dask
 $ cd ACENET_Sumer_School_Dask
 $ git init
+~~~
 
 # add github repo as remote
 $ git remote add origin https://github.com/acenet-arc/ACENET_Sumer_School_Dask.git
