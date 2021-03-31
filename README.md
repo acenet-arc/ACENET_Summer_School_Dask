@@ -24,6 +24,25 @@ $ git pull template gh-pages
 
 Now start modifying and push up your changes to your lesson's github repo (e.g. origin) when you are happy with your changes.
 
+## Updating from SWC lesson exmaple
+This template will need to be periodically updated to bring in changes/improvements made on the SWC lesson template this was forked from.
+TODO: write section detailing how to do this
+
+## Updating an ACENET lesson
+TODO: test that the below works as expected.
+
+On your working git repository for the lesson to be udpated: 
+
+1. add git remote for this lesson template
+~~~
+$ git remote add template https://github.com/acenet-arc/ACENET_CC_branded_SWC_lesson_template.git
+~~~
+2. pull down changes
+~~~
+$ git pull template gh-pages
+~~~
+
+
 lesson-example
 ==============
 
