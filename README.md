@@ -2,26 +2,27 @@ ACENET Sepcific
 ===============
 
 ## Creating a new lesson from ACENET's template
-<ol>
-<li>Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask</li>
-<li markdown="1">create new repo with same name
+1. Create new github repo with new lesson name e.g. ACENET_Sumer_School_Dask</li>
+2. create new repo with same name
 ~~~
 $ mkdir ACENET_Sumer_School_Dask
 $ cd ACENET_Sumer_School_Dask
 $ git init
 ~~~
-</li>
-
 3. add github repo as remote
 ~~~
 $ git remote add origin https://github.com/acenet-arc/ACENET_Sumer_School_Dask.git
 ~~~
-
-# add git remote for lesson template
+4. add git remote for lesson template
+~~~
 $ git remote add template https://github.com/acenet-arc/ACENET_CC_branded_SWC_lesson_template.git
-
-#pull down the template
+~~~
+5. pull down the template
+~~~
 $ git pull template gh-pages
+~~~
+
+Now start modifying and push up your changes to your lesson's github repo (e.g. origin) when you are happy with your changes.
 
 lesson-example
 ==============
