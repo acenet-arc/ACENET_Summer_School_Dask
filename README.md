@@ -21,8 +21,17 @@ $ git remote add template https://github.com/acenet-arc/ACENET_CC_branded_SWC_le
 ~~~
 $ git pull template gh-pages
 ~~~
+6. rename the default master branch to `gh-pages`. Not strictly needed but keeps things consistent.
+~~~
+$ git branch -m gh-pages
+~~~
 
-Now start modifying and push up your changes to your lesson's github repo (e.g. origin) when you are happy with your changes.
+7. Now start modifying creating/modifying episodes in the `_episodes` directory
+
+8. When you are happy you can push those up to the github repo for the new lesson
+~~~
+$ git push origin gh-pages
+~~~
 
 ## Updating from SWC lesson exmaple
 This template will need to be periodically updated to bring in changes/improvements made on the SWC lesson template this was forked from.
