@@ -188,6 +188,8 @@ def check_config(reporter, source_dir):
         reporter.check(defaults in config.get('defaults', []),
                    'configuration',
                    '"root" not set to "." in configuration')
+    if 'life_cycle' not in config:
+        config['life_cycle'] = None
     return config['life_cycle']
 
 def check_source_rmd(reporter, source_dir, parser):
@@ -390,7 +392,8 @@ class CheckBase:
 
         for node in self.find_all(self.doc, {'type': 'codeblock'}):
             cls = self.get_val(node, 'attr', 'class')
-            self.reporter.check(cls in KNOWN_CODEBLOCKS or cls.startswith('language-'),
+            self.reporter.check(cls is not None and (cls in KNOWN_CODEBLOCKS or
+                cls.startswith('language-')),
                                 (self.filename, self.get_loc(node)),
                                 'Unknown or missing code block type {0}',
                                 cls)

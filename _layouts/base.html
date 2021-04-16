@@ -17,9 +17,13 @@
     <link rel="stylesheet" type="text/css" href="{{ relative_root_path }}/assets/css/lesson.css" />
     <link rel="stylesheet" type="text/css" href="{{ relative_root_path }}/assets/css/syntax.css" />
     <link rel="license" href="#license-info" />
-
+    {% if site.carpentry == "swc" or site.carpentry == "dc" or site.carpentry == "lc" or site.carpentry == "cp" %}
     {% include favicons.html %}
-
+    {% elsif site.carpentry == "an" %}
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon-an.ico" />
+    {% elsif site.carpentry == "cc" or site.carpentry == "bst" %}
+    <link rel="shortcut icon" type="image/png" href="/favicon-cc.png" />
+    {% endif %}
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,9 +31,32 @@
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
+{% comment %}
+Embed MathJax so that we can use LaTeX Math in our lessons:
+
+Inline:
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, $$ k_{B}T/2 $$ sed do eiusmod tempor 
+incididunt ut labore et dolore magna aliqua. 
+
+Block:
+$ k_{n+1} = n^2 + k_n^2 - k_{n-1} $
+{% endcomment %}
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+{% comment %}
+End of MathJax
+{% endcomment %}
+
   <title>
   {% if page.title %}{{ page.title }}{% endif %}{% if page.title and site.title %} &ndash; {% endif %}{% if site.title %}{{ site.title }}{% endif %}
-  </title>  
+  </title>
 
   </head>
   <body>
