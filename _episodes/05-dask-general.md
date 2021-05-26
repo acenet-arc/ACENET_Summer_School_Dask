@@ -1,13 +1,14 @@
 ---
 title: "Dask - General"
-teaching: 10
-exercises: 5
+teaching: 15
+exercises: 5-10
 questions:
-- "What is Dask?"
+- "What is Dask, actually?"
 objectives:
-- "A thing we will do"
-keypoints:
-- "A key thing to know"
+- "Understand how Dask differs from normal Python"
+
+keypoints: 
+- "Dask is 'Lazy' and won't go until you tell it to go explicitly"
 - "Another key thing to know"
 ---
 

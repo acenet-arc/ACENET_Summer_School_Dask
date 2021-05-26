@@ -1,14 +1,16 @@
 ---
 title: "Dask - Bagging"
 teaching: 10
-exercises: 5
+exercises: 0 
 questions:
-- "What is Dask?"
+- "What is bagging and when do I want to use it?"
 objectives:
-- "A thing we will do"
+- "Learn when to use bagging, and when not to use bagging"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Bagging works best for large, semi-structured datasets that don't fit into your computer's memory"
+- "If the data fits in memory, use a more appropriate tool like pandas or numpy"
+- "If data is structured, use MySQL"
+- "If data is unstructured, use a different DASK method" 
 ---
 
 ## Dask - Bagging
