@@ -1,14 +1,16 @@
 ---
 title: "Dask - Arrays"
-teaching: 10
+teaching: 20
 exercises: 5
 questions:
-- "What is Dask?"
+- "What are Dask Arrays?"
+- "How do they differ from Numpy Arrays?"
+- "When should I use Dask Arrays?"
 objectives:
-- "A thing we will do"
+- "Understand uses and anti-uses for Dask Arrays"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Dask is not necessary, nor reccomended for most mathematical operations in Python"
+- "Dask Arrays find most of their use when dealing with very large datasets that don't fit into memory"
 ---
 
 ## Dask - Arrays
