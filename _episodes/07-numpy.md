@@ -14,7 +14,7 @@ keypoints:
 
 ## Numpy
 
-![](./Pictures/Math.jpg)
+![](../fig/Math.jpg)
 * Numpy is a widely used and comprehensive mathematics package in python
 * Numpy stands for "Numerical Python", and handles tasks such as matrix math, trig, linear algebra, etc.
 * Is very useful for matrix math, and matrix-like operations, such as loading data into machine learning algorithms
@@ -90,6 +90,6 @@ print(np.sqrt(array_square))
 {: .language-python}
 
 The biggest reason to use numpy, however is that it allows your data to be used by various other frameworks, such as...
-![](./Pictures/Scikit_learn_logo.svg)
-![](./Pictures/TensorFlowLogo.png)
-![](./Pictures/Pytorch_logo.png)
+![](../fig/Scikit_learn_logo.svg)
+![](../fig/TensorFlowLogo.png)
+![](../fig/Pytorch_logo.png)

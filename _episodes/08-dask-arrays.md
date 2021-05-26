@@ -90,8 +90,8 @@ z_persist.compute()
 
 ## Dask arrays allows you to move mountians
 
-![](./Pictures/Picture6.jpg)
+![](../fig/Picture6.jpg)
 
 ## A bucket of rocks at a time
 
-![](./Pictures/Picture5.jpg)
+![](../fig/Picture5.jpg)

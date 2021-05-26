@@ -13,7 +13,7 @@ keypoints:
 
 ## Python - Pandas
 
-![](./Pictures/Panda.jpg)
+![](../fig/Panda.jpg)
 
 * Pandas is effectively a spreadsheeting program for python, running on Python/Cython/C with a Python front-end.
 * Pandas is similar to Excel, but does not have a GUI, so it is faster, but less user friendly.

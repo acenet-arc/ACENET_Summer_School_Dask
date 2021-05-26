@@ -22,7 +22,7 @@ Dask is conceptually similar to a dishwasher\*, where it will wait idle until it
 **Not everything actually done all at once, Dask does several things at once.
 
 ## An artist's rendition of DASK before running based on my description
-![](fig/Picture1.png)
+![](../fig/Picture1.png)
 
 ## Dask - Distributed
 
@@ -31,7 +31,7 @@ Dask can operate as it’s own task manager in one of three ways:
 2. Processes – Sends data to separate instances of a program to be processed.  Generally works best when there are several instances of a program running at simultaneously that hold the Global Interpreter Lock*.
 3. Single-Threaded – Does one chunk of code at a time, with no parallel capacity. Primarily for Debugging.
 
-Parallel programming with Python has a complicated history because of a design decision, the Global Interpreter Lock, which limits python to a single thread most of the time. Global interperter lock is a complicated subject that I'm not prepared to digress into. If you really want to know about the GIL, [](https://realpython.com/python-gil/) , [https://en.wikipedia.org/wiki/Global_interpreter_lock](https://en.wikipedia.org/wiki/Global_interpreter_lock)
+Parallel programming with Python has a complicated history because of a design decision, the Global Interpreter Lock, which limits python to a single thread most of the time. Global interperter lock is a complicated subject that I'm not prepared to digress into. If you really want to know about the GIL, [https://realpython.com/python-gil/](https://realpython.com/python-gil/), [https://en.wikipedia.org/wiki/Global_interpreter_lock](https://en.wikipedia.org/wiki/Global_interpreter_lock)
 
 TL,DR:  Numpy, Pandas, and Scikit-Learn work around the problem using threads and Dask can work with that.
 

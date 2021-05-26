@@ -18,11 +18,11 @@ keypoints:
 * Bagging tends to be less useful than the other methods we will discuss, as unstructured data 
 
 Portions up your semi-structured data so you can...
-![](./Pictures/Picture4.jpg)
+![](../fig/Picture4.jpg)
 
 You can run more data through faster than single threads
  
-![](./Pictures/Picture3.jpg)
+![](../fig/Picture3.jpg)
 *in the metaphor, each core is it's own pizza oven
 
 ~~~
