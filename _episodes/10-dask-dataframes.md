@@ -3,12 +3,12 @@ title: "Dask - Dataframes"
 teaching: 10
 exercises: 5
 questions:
-- "What is Dask?"
+- "What is a Dask Dataframe?"
 objectives:
-- "A thing we will do"
+- "Learn when and how to use Dask Dataframes instead of Pandas Dataframes"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Dask Dataframes can be thought of as an extension of Pandas for large datasets"
+- "Generally is only useful for data that can be used with Pandas, and Pandas has begun to buckle under the weight of the spreadsheet"
 ---
 
 **When to use DataFrames (from the Dask documentation)**
