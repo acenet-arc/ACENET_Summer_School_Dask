@@ -1,14 +1,13 @@
 ---
-title: "Introduction"
-teaching: 10
-exercises: 5
+title: "Credits"
+teaching: 5
+exercises: 0
 questions:
-- "What is Dask?"
+- "Who helped make this happen"
 objectives:
-- "A thing we will do"
+- "Credit where it's due"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- ""
 ---
 
 # Working with the Python DASK library
