@@ -1,14 +1,15 @@
 ---
 title: "Setting up Python"
-teaching: 10
-exercises: 5
+teaching: 5
+exercises: 10
 questions:
-- "What is Dask?"
+- "How to set up Python"
 objectives:
-- "A thing we will do"
+- "Set up Jupyter and Python"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Loading Python Modules"
+- "Setting up virtual environment"
+- "Connecting virtual environment to Jupyter"
 ---
 
 
