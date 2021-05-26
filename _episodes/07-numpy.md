@@ -23,7 +23,7 @@ keypoints:
 ~~~
 import numpy as np
 ~~~
-{: .languages-python}
+{: .language-python}
 
 * Numpy primarily works on arrays of data, though several functions can be called on intigers or floats.
 * Arrays may have between 1 and n dimensions, and are primarily limited in size by the amount of ram a computer has to operarte on them.
@@ -39,7 +39,7 @@ print(array_square)
 print(array.shape)
 print(array_square.shape) 
 ~~~
-{: .languages-python}
+{: .language-python}
 
 ## Numpy 
 * Numpy backs onto well-written, compiled software, so it performs faster and more reliable calculations than most code you can write yourself
