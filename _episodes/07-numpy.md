@@ -3,12 +3,14 @@ title: "Numpy"
 teaching: 10
 exercises: 5
 questions:
-- "What is Dask?"
+- "What is Numpy?"
+- "Why use Numpy?"
 objectives:
-- "A thing we will do"
+- "Learn the basics of Numpy and Numy Arrays so we can understand Dask Arrays"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Numpy is a very fast python package, written in C that can do most of your math problems"
+- "Numpy is great for dealing with high-dimensional data"
+- "Numpy is the preferred data-loader for a lot of machine-learning frameworks"
 ---
 
 
