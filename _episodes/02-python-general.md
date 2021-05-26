@@ -3,12 +3,16 @@ title: "Python - General"
 teaching: 10
 exercises: 5
 questions:
-- "What is Dask?"
+- "What's python?"
+- "How do I use Python?"
 objectives:
-- "A thing we will do"
+- "Learn the absolute basics of python"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Variable = content"
+- "List = [content, content, content]"
+- "Functions"
+- "For Loops"
+- "Import Statements"
 ---
 
 ## Python - General
