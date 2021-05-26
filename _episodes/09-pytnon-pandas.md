@@ -1,14 +1,14 @@
 ---
 title: "Python - Pandas"
 teaching: 10
-exercises: 5
+exercises: 0
 questions:
-- "What is Dask?"
+- "What is Pandas"
 objectives:
-- "A thing we will do"
+- "Gain a basic understanding of Pandas and Pandas Dataframes, so we can compare it with Dask Dataframes"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Pandas is a very fast way to do spreadsheeting without a GUI"
+- "Pandas is useful when Excel begins to buckle under the load of your spreadsheets"
 ---
 
 ## Python - Pandas
