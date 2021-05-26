@@ -3,12 +3,13 @@ title: "Jupyter Notebooks"
 teaching: 10
 exercises: 5
 questions:
-- "What is Dask?"
+- "How do Jupyter Notebooks work"
 objectives:
-- "A thing we will do"
+- "Gain a basic understanding of Jupyter Notebook operations"
 keypoints:
-- "A key thing to know"
-- "Another key thing to know"
+- "Shift-Enter runs cells"
+- "Notebooks behave similar to Python scripts, but with a few differences"
+- "You need to be careful you are keeping track of the state inside of the notebook"
 ---
 
 ## Jupyter Notebooks - Usage
