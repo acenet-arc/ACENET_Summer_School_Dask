@@ -1,20 +1,19 @@
-from time import sleep
+import time
 
 def inc(x):
-  sleep(1)
+  time.sleep(1)
   return x+1
 def add(x,y):
-  sleep(1)
+  time.sleep(1)
   return x+y
 
 def main():
-  for i in range(10):
-    x=inc(1)
-    y=inc(2)
-    z=add(x,y)
-
-  print("z is "+str(z))
-
+  x=inc(1)
+  y=inc(2)
+  z=add(x,y)
+  print("z="+str(z))
 if __name__=="__main__":
+  start=time.time()
   main()
-
+  end=time.time()
+  print("wall clock time:"+str(end-start)+"s")
