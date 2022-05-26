@@ -3,13 +3,12 @@ title: "Setting up Python"
 teaching: 5
 exercises: 10
 questions:
-- "How to set up Python"
+- "What do you need to do to setup your Python environment to use Dask?"
 objectives:
-- "Set up Jupyter and Python"
+- ""
 keypoints:
 - "Loading Python Modules"
 - "Setting up virtual environment"
-- "Connecting virtual environment to Jupyter"
 ---
 
 
@@ -36,6 +35,7 @@ $ pip install --no-index --upgrade pip
 $ pip install --no-index dask
 $ pip install --no-index scikit-learn
 $ pip install toolz
-$ pip install graphviz 
+$ pip install graphviz
+$ pip install --no-index distributed 
 ~~~
 {: .language-bash}
