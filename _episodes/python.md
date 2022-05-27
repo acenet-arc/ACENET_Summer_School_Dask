@@ -12,7 +12,7 @@ keypoints:
 - ""
 ---
 
-Before we get to working with Dask we need to setup our Python environment, setup some basic timing of python code, and create a script that does something slightly interesting that we can use as a starting point to work with Dask.
+Before we get to working with Dask we need to setup our Python environment, some basic timing of python code, and create a script that does something slightly interesting that we can use as a starting point to work with Dask.
 
 ## Virtual environment setup
 Connect to the server and and load the default Python module.

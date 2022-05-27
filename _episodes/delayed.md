@@ -10,8 +10,7 @@ keypoints:
 - ""
 ---
 
-## Dask Delayed
-
+## Installing Dask
 Before we can use dask we must install it with the following command on the terminal.
 ~~~
 $ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis requests matplotlib
@@ -20,9 +19,38 @@ $ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis
 
 This actually installs lots of stuff, not just Dask, but should take around 2 minutes or a bit less. This will install these modules into the virtual environment we setup and are currently working in.
 
-Looking back at the Python code we have, the two calls to the `inc` functions *could* be called in parallel, because they are totally independent of one-another.
+## Using Dask Delayed
+Looking at the Python code we have
 
-We can use `dask.delayed` on our functions to make them **lazy**. When we say **lazy** it means that those functions won't be called immediately. What happens instead is that it records what we want to compute as a task into a graph that we will run later using the `compute` member function on the object returned by the `dask.delayed` function. 
+<div class="gitfile" markdown="1">
+~~~
+import time
+
+def inc(x):
+  time.sleep(1)
+  return x+1
+def add(x,y):
+  time.sleep(1)
+  return x+y
+
+def main():
+  x=inc(1)
+  y=inc(2)
+  z=add(x,y)
+  print("z="+str(z))
+if __name__=="__main__":
+  start=time.time()
+  main()
+  end=time.time()
+  print("wall clock time:"+str(end-start)+"s")
+~~~
+{: .python}
+[no-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/no-dask.py)
+</div>
+
+the two calls to the `inc` functions *could* be called in parallel, because they are totally independent of one-another.
+
+We can use `dask.delayed` on our functions to make them **lazy**. When we say **lazy** we mean that those functions will not be called immediately. What happens instead is that it records what we want to compute as a task into a graph that we will run later using the `compute` member function on the object returned by the `dask.delayed` function.
 
 Lets add the new Dask code now.
 
@@ -101,7 +129,7 @@ wall clock time:2.004542350769043s
 ~~~
 {: .output}
 
-Ah that's better it is now down to 2s from our original 3s. To help us understand what Dask is doing we can use the `visualize` `delayed` object member function which creates a visualization of the graph Dask uses for our tasks.
+Ah that's better it is now down to 2s from our original 3s. To help us understand what Dask is doing we can use the member function `visualize` of the `Delayed` object which creates a visualization of the graph Dask created for our tasks.
 
 ~~~
 ...
@@ -229,33 +257,13 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 {: .challenge}
 
 > ## Visualize loop parallelization
-> Use the solution to the previous challenge, shown below, to visualize how the loop is being parallelized by Dask.
-> <div class="gitfile" markdown="1">
-> ~~~
-> import time
-> import dask
+> Use the solution to the previous challenge to visualize how the loop is being parallelized by Dask. 
 > 
-> def inc(x):
->   time.sleep(1)
->   return x+1
-> def main():
->   data=[1,2,3,4,5,6,7,8]
->   dataInc=[]
->   for x in data:
->     y=dask.delayed(inc)(x)
->     dataInc.append(y)
->   total=dask.delayed(sum)(dataInc)
->   result=total.compute()
->   print("total="+str(result))
-> if __name__=="__main__":
->   start=time.time()
->   main()
->   end=time.time()
->   print("wall clock time:"+str(end-start)+"s")
+> You can get the solution with the following command.
 > ~~~
-> {: .python}
-> [dask-loop-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-template.py)
-> </div>
+> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-solution.py
+> ~~~
+> {: .bash}
 > > ## Solution
 > > ~~~
 > > ...
