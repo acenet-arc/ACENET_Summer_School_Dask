@@ -106,7 +106,12 @@ plugins:
   - jekyll-paginate
 episode_order:
   - introduction
-  - dask-delay
+  - python
+  - delayed
+  - schedulers
+  - array
+  - dataframes
+  - bags
 #  - modules
 #  - derived_types
 #  - extending_types
