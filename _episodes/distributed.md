@@ -63,6 +63,11 @@ def main():
 [compute-distributed.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/compute-distributed.py)
 </div>
 
+In the above script we have added a few bits. We have imported `SLURMCluster` which allows us to submit jobs to create independent Dask workers and we have imported the Dask `Client` so that we can tell it to use the software Dask cluster we create.
+
+We can create some number of workers using the `cluster.scale(numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
+
+Lets run our new script, this time the computation is all done in the workers and not in the job we submit with the `srun` command. There is no need to change the number of CPUs we request as that is all taken care of by changing the `numWorkers` variable. Lets also immediately run the `sqcm` command to see what jobs we have running and frequently afterwards to see how Dask spawns new workers for us.
 ~~~
 $ srun python compute-distributed.py&
 $ sqcm
@@ -73,6 +78,7 @@ $ sqcm
     980 cpubase_b   python user49  R  0:02     1    1  256M node-mdm1
 ~~~
 {: .output}
+Here you can just see our first job we submitted.
 ~~~
 $ sqcm
 ~~~
@@ -83,6 +89,7 @@ $ sqcm
     980 cpubase_b   python user49  R  0:04     1    1  256M node-mdm1
 ~~~
 {: .output}
+Here you can see the worker job that Dask spawned for our work is in the `PD` or pending state.
 ~~~
 $ sqcm
 ~~~
@@ -93,6 +100,7 @@ $ sqcm
     981 cpubase_b dask-wor user49  R  0:02     1    1  245M node-mdm1
 ~~~
 {: .output}
+Finally here we see that the worker is up and running. Next we see a print out of the job script that Dask uses to launch our workers. The settings for this script come from the settings we gave to the `SLURMCluster` function.
 ~~~
 #SBATCH -J dask-worker
 #SBATCH -n 1
@@ -114,6 +122,7 @@ wall clock time:18.724435329437256s
 ----------------------------------------
 ~~~
 {: .output}
+And finally we get our timings for performing our computations. A little longer than with our pur Dask Delayed code, but lets see how it changes with more cores, or rather more workers.
 
 > ## More cores distributed
 > Given the above `compute-distributed.py` run first with `numWorkers=1` to get a base line then run with `numWorkers=2`, `4`, and `8`.
@@ -160,8 +169,6 @@ wall clock time:18.724435329437256s
 
 [distributed, multiprocessing, processes, single-threaded, sync, synchronous, threading, threads]
 
-
-
 - single thread
   - no parallelism
   - executes in computation sequentially in current thread
@@ -185,83 +192,4 @@ wall clock time:18.724435329437256s
   (launch dask-schedular, and dask-workers registered with schedular)
   - dask mpi? Do I want to talk about this? Need to provide a schedular_file.json file what is that?
   
-  srun python dask-slurm-job-launcher.py
-  
-===========
-Exercises
-  
-  alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
-  
-  srun --cpus-per-task=1 python dask-delay-python-dasked.py&
-  sqcm
-  
-  Whats the compute time?
-  ====================================
-  Compute time: 11.320246458053589s
-  ====================================
-  
-  seff
-  
-  What's the CPU efficiency
-  
-  ------
-  
-  srun --cpus-per-task=2 python dask-delay-python-dasked.py&
-  sqcm
-  
-  Whats the compute time?
-  
-  seff
-  
-  What's the CPU efficiency
-  
-  ------
-  
-  srun --cpus-per-task=4 python dask-delay-python-dasked.py&
-  sqcm
-  
-  What's the compute time?
-  
-  seff
-  What's the CPU efficiency
-  
-  ------
-  
-  srun --cpus-per-task=8 python dask-delay-python-dasked.py&
-  sqcm
-  
-  What's the compute time?
-  
-  seff
-  What's the CPU efficiency
-  
-  All the compute times are about the same! And the CPU efficiency keeps going down What's up? Turns out this is because of GIL. The operations in that script all make use of the Python interpreter and so while they are running the tasks in multiple threads each thread has to take turns accessing the Python interpreter so in reality there is no parallelism at all happening here.
-  
-  
-  How to fix it? Dask distributed!
-  
-  srun python dask-delay-python-dasked-distributed.py&
-  
-  size=40000000
-  numParts=4
-  numWorkers=1
-  ====================================
-  Compute time: 12.333828449249268s
-  ====================================
-  
-  numWorkers=2
-  ====================================
-  Compute time= 6.07476544380188s
-  ====================================
-  
-  numWorkers=4
-  ====================================
-  Compute time= 3.454866409301758s
-  ====================================
-  
-  numWorkers=8
-  ====================================
-  Compute time= 3.3805696964263916s
-  ====================================
-
 -->

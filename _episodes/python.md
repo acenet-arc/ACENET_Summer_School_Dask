@@ -15,9 +15,17 @@ keypoints:
 Before we get to working with Dask we need to setup our Python environment, some basic timing of python code, and create a script that does something slightly interesting that we can use as a starting point to work with Dask.
 
 ## Virtual environment setup
-Connect to the server and and load the default Python module.
+Connect to the server using your own username and check to see if your x11 forwarding is working.
 ~~~
-$ ssh -X user49@pcs.ace-net.training
+$ ssh -X <your-username>@pcs.ace-net.training
+$ xclock
+~~~
+{: .bash}
+
+You should now be connected to the training cluster and hopefully if you have an x11 server running you should see a little analog clock pop up in a window. If you can't get x11 forwarding working, it isn't the end of the world. There is one small exercise you will have look at the solution to see the graph.
+
+Next load the Python module.
+~~~
 $ module load python
 ~~~
 {: .bash}

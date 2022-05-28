@@ -20,7 +20,7 @@ $ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis
 This actually installs lots of stuff, not just Dask, but should take around 2 minutes or a bit less. This will install these modules into the virtual environment we setup and are currently working in.
 
 ## Using Dask Delayed
-Looking at the Python code we have
+Lets start by looking at the python code we have from the last episode and thinking about what parts could be run in parallel.
 
 <div class="gitfile" markdown="1">
 ~~~
@@ -56,7 +56,7 @@ if __name__=="__main__":
 [pre-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/pre-dask.py)
 </div>
 
-the two calls to the `inc` functions *could* be called in parallel, because they are totally independent of one-another.
+The two calls to the `inc` functions *could* be called in parallel, because they are totally independent of one-another.
 
 We can use `dask.delayed` on our functions to make them **lazy**. When we say **lazy** we mean that those functions will not be called immediately. What happens instead is that it records what we want to compute as a task into a graph that we will run later using the `compute` member function on the object returned by the `dask.delayed` function.
 
