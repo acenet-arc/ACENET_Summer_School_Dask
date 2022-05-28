@@ -79,14 +79,21 @@ $ nano hello.py
 ~~~
 import time
 
+def elapsed(start):
+  return str(time.time()-start)+"s"
 def main():
   print("hello world")
 
 if __name__=="__main__":
   start=time.time()
   main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  wallClock=elapsed(start)
+  print()
+  print("----------------------------------------")
+  print("wall clock time:"+wallClock)
+  print("----------------------------------------")
+  print()
+
 ~~~
 {: .python}
 [hello.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/hello.py)
@@ -97,7 +104,11 @@ $ python hello.py
 {: .bash}
 ~~~
 hello world
-wall clock time:5.316734313964844e-05s
+
+----------------------------------------
+wall clock time:2.574920654296875e-05s
+----------------------------------------
+
 ~~~
 {: .output}
 
@@ -110,7 +121,11 @@ $ srun python hello.py
 {: .bash}
 ~~~
 hello world
+
+----------------------------------------
 wall clock time:7.867813110351562e-06s
+----------------------------------------
+
 ~~~
 {: .output}
 
@@ -120,14 +135,15 @@ This command runs our script on a compute node granting access to a single compu
 To let us see how Dask can be used to parallelize a python script lets first write a bit more interesting python script to parallelize with Dask in the next episode.
 
 ~~~
-$ cp ./hello.py no-dask.py
-$ nano no-dask.py
+$ cp ./hello.py pre-dask.py
+$ nano pre-dask.py
 ~~~
 {: .bash}
 
 <div class="gitfile" markdown="1">
 ~~~
-import time
+def elapsed(start):
+  return str(time.time()-start)+"s"
 
 def inc(x):
   time.sleep(1)
@@ -141,24 +157,33 @@ def main():
   y=inc(2)
   z=add(x,y)
   print("z="+str(z))
+
 if __name__=="__main__":
   start=time.time()
   main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  wallClock=elapsed(start)
+  print()
+  print("----------------------------------------")
+  print("wall clock time:"+wallClock)
+  print("----------------------------------------")
+  print()
 ~~~
 {: .python}
-[no-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/no-dask.py)
+[pre-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/pre-dask.py)
 </div>
 
 Save and exit and run on a compute node with the following command and take note of the runtime.
 ~~~
-$ srun python ./no-dask.py
+$ srun python ./pre-dask.py
 ~~~
 {: .bash}
 ~~~
 z=5
-wall clock time:3.003295421600342s
+
+----------------------------------------
+wall clock time:3.0034890174865723s
+----------------------------------------
+
 ~~~
 {: .output}
 It takes about 3s which isn't too surprising since we have three function calls all with a 1s `sleep` in them. Clearly this sleep is dominating the run time. This is obviously artificial but will allows us to have a well understood compute requirements while we are exploring Dask.

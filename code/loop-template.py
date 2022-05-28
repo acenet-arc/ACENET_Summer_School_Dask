@@ -1,5 +1,8 @@
 import time
 
+def elapsed(start):
+  return str(time.time()-start)+"s"
+
 def inc(x):
   time.sleep(1)
   return x+1
@@ -11,8 +14,13 @@ def main():
     dataInc.append(y)
   total=sum(dataInc)
   print("total="+str(total))
+
 if __name__=="__main__":
   start=time.time()
   main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  wallClock=elapsed(start)
+  print()
+  print("----------------------------------------")
+  print("wall clock time:"+wallClock)
+  print("----------------------------------------")
+  print()

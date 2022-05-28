@@ -1,6 +1,9 @@
 import time
 import dask
 
+def elapsed(start):
+  return str(time.time()-start)+"s"
+
 def inc(x):
   time.sleep(1)
   return x+1
@@ -12,11 +15,15 @@ def main():
   x=dask.delayed(inc)(1)
   y=dask.delayed(inc)(2)
   z=dask.delayed(add)(x,y)
-  z.visualize()
   result=z.compute()
   print("result="+str(result))
+  
 if __name__=="__main__":
   start=time.time()
   main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  wallClock=elapsed(start)
+  print()
+  print("----------------------------------------")
+  print("wall clock time:"+wallClock)
+  print("----------------------------------------")
+  print()

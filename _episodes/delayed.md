@@ -26,6 +26,9 @@ Looking at the Python code we have
 ~~~
 import time
 
+def elapsed(start):
+  return str(time.time()-start)+"s"
+
 def inc(x):
   time.sleep(1)
   return x+1
@@ -38,14 +41,19 @@ def main():
   y=inc(2)
   z=add(x,y)
   print("z="+str(z))
+
 if __name__=="__main__":
   start=time.time()
   main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  wallClock=elapsed(start)
+  print()
+  print("----------------------------------------")
+  print("wall clock time:"+wallClock)
+  print("----------------------------------------")
+  print()
 ~~~
 {: .python}
-[no-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/no-dask.py)
+[pre-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/pre-dask.py)
 </div>
 
 the two calls to the `inc` functions *could* be called in parallel, because they are totally independent of one-another.
@@ -55,15 +63,16 @@ We can use `dask.delayed` on our functions to make them **lazy**. When we say **
 Lets add the new Dask code now.
 
 ~~~
+$ cp pre-dask.py delayed.py
+$ nano delayed.py
+~~~
+{: .bash}
+
+~~~
 import time
 import dask
 
-def inc(x):
-  time.sleep(1)
-  return x+1
-def add(x,y):
-  time.sleep(1)
-  return x+y
+...
 
 def main():
   x=dask.delayed(inc)(1)
@@ -71,22 +80,23 @@ def main():
   z=dask.delayed(add)(x,y)
   #result=z.compute()
   #print("result="+str(result))
-if __name__=="__main__":
-  start=time.time()
-  main()
-  end=time.time()
-  print("wall clock time:"+str(end-start)+"s")
+  
+...
 ~~~
 {: .python}
 
 However, to illustrate that nothing happens until `z.compute()` is called lets comment it and the following print line out and run it.
 
 ~~~
-$ srun python ./dask-delay.py
+$ srun python ./delayed.py
 ~~~
 {: .bash}
 ~~~
-wall clock time:0.00028586387634277344s
+
+----------------------------------------
+wall clock time:0.22939133644104004s
+----------------------------------------
+
 ~~~
 {: .output}
 
@@ -104,32 +114,40 @@ def main():
 ...
 ~~~
 {: .python}
-[dask-delay.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-delay.py)
+[delayed.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/delayed.py)
 </div>
 
 ~~~
-$ srun python ./dask-delay.py
+$ srun python ./delayed.py
 ~~~
 {: .bash}
 ~~~
 result=5
-wall clock time:3.0056424140930176s
+
+----------------------------------------
+wall clock time:3.3499603271484375s
+----------------------------------------
+
 ~~~
 {: .output}
 
-Hey, that's no faster than the non-dask version. In fact it is a very tiny bit slower. What gives? Well, we only ran it on one core. Lets try on two cores and see what hapens.
+Hey, that's no faster than the non-dask version. In fact it is a very tiny bit slower. What gives? Well, we only ran it on one core. Lets try on two cores and see what happens.
 
 ~~~
-$ srun --cpus-per-task=2 python ./dask-delay.py
+$ srun --cpus-per-task=2 python ./delayed.py
 ~~~
 {: .bash}
 ~~~
 result=5
-wall clock time:2.004542350769043s
+
+----------------------------------------
+wall clock time:2.169353485107422s
+----------------------------------------
+
 ~~~
 {: .output}
 
-Ah that's better it is now down to 2s from our original 3s. To help us understand what Dask is doing we can use the member function `visualize` of the `Delayed` object which creates a visualization of the graph Dask created for our tasks.
+Ah that's better it is now down to about 2s from our original 3s. To help us understand what Dask is doing we can use the member function `visualize` of the `Delayed` object which creates a visualization of the graph Dask created for our tasks.
 
 ~~~
 ...
@@ -144,7 +162,7 @@ def main():
 {: .python}
 
 ~~~
-$ srun python ./dask-delay.py
+$ srun python ./delayed.py
 ~~~
 {: .bash}
 
@@ -164,12 +182,15 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > ## Parallelize a loop
 > Download the below script with the below `wget` command.
 > ~~~
-> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-template.py
+> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-template.py
 > ~~~
 > {: .bash}
 > <div class="gitfile" markdown="1">
 > ~~~
 > import time
+> 
+> def elapsed(start):
+>   return str(time.time()-start)+"s"
 > 
 > def inc(x):
 >   time.sleep(1)
@@ -182,14 +203,19 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 >     dataInc.append(y)
 >   total=sum(dataInc)
 >   print("total="+str(total))
+>   
 > if __name__=="__main__":
 >   start=time.time()
 >   main()
->   end=time.time()
->   print("wall clock time:"+str(end-start)+"s")
+>   wallClock=elapsed(start)
+>   print()
+>   print("----------------------------------------")
+>   print("wall clock time:"+wallClock)
+>   print("----------------------------------------")
+>   print()
 > ~~~
 > {: .python}
-> [dask-loop-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-template.py)
+> [loop-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-template.py)
 > </div>
 > Run this script to with `--cpus-per-task=1` and note the run time.
 > 
@@ -211,46 +237,62 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > > ...
 > > ~~~
 > > {: .python}
-> > [dask-loop-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-template.py)
+> > [loop-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-solution.py)
 > > </div>
 > > #### Serial
 > > ~~~
-> > srun --cpus-per-task=1 python dask-loop-template.py
+> > srun --cpus-per-task=1 python loop-template.py
 > > ~~~
 > > {: .bash}
 > > ~~~
 > > total=44
+> > 
+> > ----------------------------------------
 > > wall clock time:8.008957147598267s
+> > ----------------------------------------
+> > 
 > > ~~~
 > > {: .output}
 > > #### Delayed Serial
 > > ~~~
-> > srun --cpus-per-task=1 python dask-loop-solution.py
+> > srun --cpus-per-task=1 python loop-solution.py
 > > ~~~
 > > {: .bash}
 > > ~~~
 > > total=44
+> > 
+> > ----------------------------------------
 > > wall clock time:8.009050607681274s
+> > ----------------------------------------
+> > 
 > > ~~~
 > > {: .output}
 > > #### Delayed 2 CPUs
 > > ~~~
-> > srun --cpus-per-task=2 python dask-loop-solution.py
+> > srun --cpus-per-task=2 python loop-solution.py
 > > ~~~
 > > {: .bash}
 > > ~~~
 > > total=44
+> > 
+> > ----------------------------------------
 > > wall clock time:4.008902311325073s
+> > ----------------------------------------
+> > 
 > > ~~~
 > > {: .output}
 > > #### Delayed 4 CPUs
 > > ~~~
-> > srun --cpus-per-task=4 python dask-loop-solution.py
+> > srun --cpus-per-task=4 python loop-solution.py
 > > ~~~
 > > {: .bash}
 > > ~~~
 > > total=44
+> > 
+> > ----------------------------------------
 > > wall clock time:2.005645990371704s
+> > ----------------------------------------
+> > 
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -261,7 +303,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > 
 > You can get the solution with the following command.
 > ~~~
-> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-solution.py
+> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-solution.py
 > ~~~
 > {: .bash}
 > > ## Solution
@@ -276,7 +318,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > > ~~~
 > > {: .python}
 > > ~~~
-> > $ srun --cpus-per-task=4 python dask-loop-solution.py
+> > $ srun --cpus-per-task=4 python loop-solution.py
 > > $ feh mydask.png
 > > ~~~
 > > {: .bash}
@@ -288,7 +330,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > ## Parallelize loop with flow control
 > Download the below script with the below `wget` command.
 > ~~~
-> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-flow-template.py
+> $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-template.py
 > ~~~
 > {: .bash}
 > <div class="gitfile" markdown="1">
@@ -322,7 +364,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 >   print("wall clock time:"+str(end-start)+"s")
 > ~~~
 > {: .python}
-> [dask-loop-flow-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-flow-template.py)
+> [loop-flow-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-template.py)
 > </div>
 > Then parallelize with `dask.delayed`, `compute`, and visualize the task graph.
 > > ## Solution
@@ -346,7 +388,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > >   ...
 > > ~~~
 > > {: .python}
-> > [dask-loop-flow-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dask-loop-flow-solution.py)
+> > [loop-flow-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-solution.py)
 > > </div>
 > > ![Loop with flow control parallelization graph](../fig/loop-parallel-flow.png)
 > {: .solution}
