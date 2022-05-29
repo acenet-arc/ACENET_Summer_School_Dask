@@ -1,6 +1,6 @@
 ---
-title: "Dask Dataframes"
-teaching: 10
+title: "Cython"
+teaching: 15
 exercises: 10
 questions:
 - ""

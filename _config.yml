@@ -110,9 +110,11 @@ episode_order:
   - delayed
   - computations
   - distributed
+  - numpy
   - array
+  - pandas
   - dataframes
-  - bags
+  - cython
 #  - modules
 #  - derived_types
 #  - extending_types

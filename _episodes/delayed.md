@@ -3,7 +3,9 @@ title: "Dask Delayed"
 teaching: 15
 exercises: 20
 questions:
+- "How do you install Dask Delayed?"
 - "How can Dask Delayed be used to parallelize python code?"
+- "How can I see what Dask Delayed is doing?"
 objectives:
 - ""
 keypoints:
@@ -15,7 +17,7 @@ Before we can use dask we must install it with the following command on the term
 ~~~
 $ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis requests matplotlib
 ~~~
-{: .bash}
+{: .language-bash}
 
 This actually installs lots of stuff, not just Dask, but should take around 2 minutes or a bit less. This will install these modules into the virtual environment we setup and are currently working in.
 
@@ -52,7 +54,7 @@ if __name__=="__main__":
   print("----------------------------------------")
   print()
 ~~~
-{: .python}
+{: .language-python}
 [pre-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/pre-dask.py)
 </div>
 
@@ -66,7 +68,7 @@ Lets add the new Dask code now.
 $ cp pre-dask.py delayed.py
 $ nano delayed.py
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 import time
@@ -83,14 +85,14 @@ def main():
   
 ...
 ~~~
-{: .python}
+{: .language-python}
 
 However, to illustrate that nothing happens until `z.compute()` is called lets comment it and the following print line out and run it.
 
 ~~~
 $ srun python ./delayed.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 
 ----------------------------------------
@@ -113,14 +115,14 @@ def main():
   print("result="+str(result))
 ...
 ~~~
-{: .python}
+{: .language-python}
 [delayed.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/delayed.py)
 </div>
 
 ~~~
 $ srun python ./delayed.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 result=5
 
@@ -136,7 +138,7 @@ Hey, that's no faster than the non-dask version. In fact it is a very tiny bit s
 ~~~
 $ srun --cpus-per-task=2 python ./delayed.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 result=5
 
@@ -159,19 +161,19 @@ def main():
   print("result="+str(result))
 ...
 ~~~
-{: .python}
+{: .language-python}
 
 ~~~
 $ srun python ./delayed.py
 ~~~
-{: .bash}
+{: .language-bash}
 
 Which returns fairly quickly because we aren't actually doing any work. However it has created a `mydask.png` file which lets us visualize what Dask will do. Lets have a look at it (this requires the -X option to work and a x11 server running).
 
 ~~~
 $ feh mydask.png
 ~~~
-{: .bash}
+{: .language-bash}
 
 ![dask-delay.png](../fig/dask-delay.png)
 
@@ -184,7 +186,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > ~~~
 > $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-template.py
 > ~~~
-> {: .bash}
+> {: .language-bash}
 > <div class="gitfile" markdown="1">
 > ~~~
 > import time
@@ -214,7 +216,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 >   print("----------------------------------------")
 >   print()
 > ~~~
-> {: .python}
+> {: .language-python}
 > [loop-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-template.py)
 > </div>
 > Run this script to with `--cpus-per-task=1` and note the run time.
@@ -236,14 +238,14 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > >   print("total="+str(result))
 > > ...
 > > ~~~
-> > {: .python}
+> > {: .language-python}
 > > [loop-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-solution.py)
 > > </div>
 > > #### Serial
 > > ~~~
 > > srun --cpus-per-task=1 python loop-template.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > total=44
 > > 
@@ -257,7 +259,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > > ~~~
 > > srun --cpus-per-task=1 python loop-solution.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > total=44
 > > 
@@ -271,7 +273,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > > ~~~
 > > srun --cpus-per-task=2 python loop-solution.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > total=44
 > > 
@@ -285,7 +287,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > > ~~~
 > > srun --cpus-per-task=4 python loop-solution.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > total=44
 > > 
@@ -305,7 +307,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > ~~~
 > $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-solution.py
 > ~~~
-> {: .bash}
+> {: .language-bash}
 > > ## Solution
 > > ~~~
 > > ...
@@ -316,12 +318,12 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > >   result=total.compute()
 > >   ...
 > > ~~~
-> > {: .python}
+> > {: .language-python}
 > > ~~~
 > > $ srun --cpus-per-task=4 python loop-solution.py
 > > $ feh mydask.png
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ![dask delayed loop parallelization graph](../fig/loop-parellel.png)
 > > {: .output}
 > {: .solution}
@@ -332,7 +334,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > ~~~
 > $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-template.py
 > ~~~
-> {: .bash}
+> {: .language-bash}
 > <div class="gitfile" markdown="1">
 > ~~~
 > import time
@@ -363,7 +365,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 >   end=time.time()
 >   print("wall clock time:"+str(end-start)+"s")
 > ~~~
-> {: .python}
+> {: .language-python}
 > [loop-flow-template.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-template.py)
 > </div>
 > Then parallelize with `dask.delayed`, `compute`, and visualize the task graph.
@@ -387,7 +389,7 @@ Here you can see that the two `inc` functions can be run in parallel provided we
 > >   result=total.compute()
 > >   ...
 > > ~~~
-> > {: .python}
+> > {: .language-python}
 > > [loop-flow-solution.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/loop-flow-solution.py)
 > > </div>
 > > ![Loop with flow control parallelization graph](../fig/loop-parallel-flow.png)

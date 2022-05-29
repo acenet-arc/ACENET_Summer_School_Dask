@@ -3,7 +3,8 @@ title: "Real Computations"
 teaching: 15
 exercises: 10
 questions:
-- "What happens when I use Dask for real computations?"
+- "What happens when I use Dask for \"real\" computations?"
+- "How can I see CPU efficiency of a SLURM Job?"
 objectives:
 - ""
 keypoints:
@@ -66,7 +67,7 @@ if __name__=="__main__":
   print()
 
 ~~~
-{: .python}
+{: .language-python}
 [compute.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/compute.py)
 </div>
 
@@ -76,7 +77,7 @@ Lets run it.
 ~~~
 $ srun --cpus-per-task=1 python compute.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 
 =======================================
@@ -100,7 +101,7 @@ wall clock time:11.632789134979248s
 > > ~~~
 > > $ srun --cpus-per-task=1 python compute.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > =======================================
 > > Compute time: 11.632155656814575s
@@ -117,7 +118,7 @@ wall clock time:11.632789134979248s
 > > ~~~
 > > $ srun --cpus-per-task=2 python compute.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > =======================================
 > > Compute time: 11.144386768341064s
@@ -134,7 +135,7 @@ wall clock time:11.632789134979248s
 > > ~~~
 > > $ srun --cpus-per-task=4 python compute.py
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > =======================================
 > > Compute time: 11.241060972213745s
@@ -150,14 +151,14 @@ wall clock time:11.632789134979248s
 > {: .solution}
 {: .challenge}
 
-In the last exercise we learned that our "computations" do not parallelize as well as the `time.sleep()` function did previously. To explore this lets take a look at the CPU efficiency of our jobs. To do this we can use the `seff` command which outputs stats for a job after it has completed given the **JobID** including the CPU efficiency. But where do we get the JobID? To get the JobID we ca run our jobs in the background by appending the `&` character to our `srun` command. Once we have our job running in the background we check on it in the queue to get the JobID.
+In the last exercise we learned that our "computations" do not parallelize as well as the `time.sleep()` function did previously. To explore this lets take a look at the CPU efficiency of our jobs. To do this we can use the `seff` command which outputs stats for a job after it has completed given the **JobID** including the CPU efficiency. But where do we get the JobID? To get the JobID we can run our jobs in the background by appending the `&` character to our `srun` command. Once we have our job running in the background we check on it in the queue to get the JobID.
 
 To make it a little easier to see what is going on in our queue lets create an alias for the `squeue` command with some extra options.
 
 ~~~
-% alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
+$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
 ~~~
-{: .bash}
+{: .language-bash}
 
 Now we can run the command `sqcm` and get only our jobs (not everyones) and also additional information about our jobs, for example how many cores and how much memory was requested.
 
@@ -166,7 +167,7 @@ Lets run a job now and try it out.
 $ srun --cpus-per-task=1 python compute.py&
 $ sqcm
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
  JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
     964 cpubase_b   python user49  R  0:10     1    1  256M node-mdm1
@@ -198,7 +199,7 @@ With the JobID we can use the `seff` command to see what the cpu efficiency was.
 ~~~
 $ seff 965
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 Job ID: 965
@@ -226,7 +227,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > $ srun --cpus-per-task=1 python compute.py&
 > > $ sqcm
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > >   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
 > >     966 cpubase_b   python user49  R  0:04     1    1  256M node-mdm1
@@ -235,7 +236,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > ~~~
 > > $ seff 966
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > Job ID: 966
 > > Cluster: pcs
@@ -254,7 +255,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > $ srun --cpus-per-task=2 python compute.py&
 > > $ sqcm
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > >   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
 > >     967 cpubase_b   python user49  R  0:04     1    2  256M node-mdm1
@@ -263,7 +264,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > ~~~
 > > $ seff 967
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > Job ID: 967
 > > Cluster: pcs
@@ -283,7 +284,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > $ srun --cpus-per-task=4 python compute.py&
 > > $ sqcm
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > >   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
 > >     968 cpubase_b   python user49  R  0:04     1    4  256M node-mdm1
@@ -292,7 +293,7 @@ We got almost 85% CPU efficiency, not too bad.
 > > ~~~
 > > $ seff 968
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > ~~~
 > > Job ID: 968
 > > Cluster: pcs

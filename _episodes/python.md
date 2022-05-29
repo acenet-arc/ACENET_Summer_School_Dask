@@ -20,7 +20,7 @@ Connect to the server using your own username and check to see if your x11 forwa
 $ ssh -X <your-username>@pcs.ace-net.training
 $ xclock
 ~~~
-{: .bash}
+{: .language-bash}
 
 You should now be connected to the training cluster and hopefully if you have an x11 server running you should see a little analog clock pop up in a window. If you can't get x11 forwarding working, it isn't the end of the world. There is one small exercise you will have look at the solution to see the graph.
 
@@ -28,7 +28,7 @@ Next load the Python module.
 ~~~
 $ module load python
 ~~~
-{: .bash}
+{: .language-bash}
 
 There is a version of python already available on the login node, but for consistency between clusters it is better to use the python version available through module system. If we wanted we could specify a particular version of the Python module to load, with something like `module load python/3.8.10`. For more information about using modules see the [Alliance documentation on modules](https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en).
 
@@ -37,7 +37,7 @@ Next lets create a python virtual environment for our dask work and activate it.
 $ virtualenv --no-download dask
 $ source ~/dask/bin/activate
 ~~~
-{: .bash}
+{: .language-bash}
 
 A Python virtual environment provides an isolated place to install different Python packages. You can create multiple virtual environments to install different packages or versions of packages and switch between them to keeping each environment separate from each other avoiding version conflicts. For more information about using virtual environments see the [Alliance documentation on python virtual environments](https://docs.alliancecan.ca/wiki/Python#Creating_and_using_a_virtual_environment).
 
@@ -46,7 +46,7 @@ Lets create a basic "hello world" python script and make sure we can run it as a
 ~~~
 $ nano hello.py
 ~~~
-{: bash}
+{: .language-bash}
 
 This starts the nano editor, editing a new file `hello.py`.
 
@@ -59,7 +59,7 @@ def main():
 if __name__=="__main__":
   main()
 ~~~
-{: .python}
+{: .language-python}
 
 Save and exit by pressing 'ctrl'+'x' answering 'y' when asked if you would like to save followed by pressing enter to accept the filename. 
 
@@ -70,7 +70,7 @@ Lets run the script to see if everything is working.
 ~~~
 $ python ./hello.py
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 hello world
@@ -82,7 +82,7 @@ Since we are going to be parellelizing code using Dask it is useful to see what 
 ~~~
 $ nano hello.py
 ~~~
-{: .bash}
+{: .language-bash}
 <div class="gitfile" markdown="1">
 ~~~
 import time
@@ -103,13 +103,13 @@ if __name__=="__main__":
   print()
 
 ~~~
-{: .python}
+{: .language-python}
 [hello.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/hello.py)
 </div>
 ~~~
 $ python hello.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 hello world
 
@@ -126,7 +126,7 @@ Next to run more computationally intensive scripts or to run with multiple cores
 ~~~
 $ srun python hello.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 hello world
 
@@ -146,7 +146,7 @@ To let us see how Dask can be used to parallelize a python script lets first wri
 $ cp ./hello.py pre-dask.py
 $ nano pre-dask.py
 ~~~
-{: .bash}
+{: .language-bash}
 
 <div class="gitfile" markdown="1">
 ~~~
@@ -176,7 +176,7 @@ if __name__=="__main__":
   print("----------------------------------------")
   print()
 ~~~
-{: .python}
+{: .language-python}
 [pre-dask.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/pre-dask.py)
 </div>
 
@@ -184,7 +184,7 @@ Save and exit and run on a compute node with the following command and take note
 ~~~
 $ srun python ./pre-dask.py
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
 z=5
 

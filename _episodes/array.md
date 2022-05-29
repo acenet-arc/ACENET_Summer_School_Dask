@@ -1,14 +1,13 @@
 ---
 title: "Dask Array"
-teaching: 15
-exercises: 0
+teaching: 10
+exercises: 10
 questions:
 - ""
 objectives:
 - ""
 keypoints:
 - ""
-start: true
 ---
 
 Might be a nice way to visualize what is going on without doing something too complex to really be able to visualize

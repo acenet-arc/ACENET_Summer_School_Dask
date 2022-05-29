@@ -4,6 +4,7 @@ teaching: 10
 exercises: 10
 questions:
 - "How can I avoid the GIL problem?"
+- "How can I run multiple Python interpreters at once on one problem?"
 objectives:
 - ""
 keypoints:
@@ -20,7 +21,8 @@ Lets start with our previous `compute.py` script and modify it to run in a distr
 $ cp compute.py compute-distributed.py
 $ nano compute-distributed.py
 ~~~
-{: .bash}
+{: .language-bash}
+
 <div class="gitfile" markdown="1">
 ~~~
 import time
@@ -59,7 +61,7 @@ def main():
   computeTime=elapsed(start)
 ...
 ~~~
-{: .python}
+{: .language-python}
 [compute-distributed.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/compute-distributed.py)
 </div>
 
@@ -72,7 +74,7 @@ Lets run our new script, this time the computation is all done in the workers an
 $ srun python compute-distributed.py&
 $ sqcm
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
     980 cpubase_b   python user49  R  0:02     1    1  256M node-mdm1
@@ -82,7 +84,7 @@ Here you can just see our first job we submitted.
 ~~~
 $ sqcm
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
     981 cpubase_b dask-wor user49 PD  0:00     1    1  245M
@@ -93,14 +95,14 @@ Here you can see the worker job that Dask spawned for our work is in the `PD` or
 ~~~
 $ sqcm
 ~~~
-{: .bash}
+{: .language-bash}
 ~~~
   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
     980 cpubase_b   python user49  R  0:07     1    1  256M node-mdm1
     981 cpubase_b dask-wor user49  R  0:02     1    1  245M node-mdm1
 ~~~
 {: .output}
-Finally here we see that the worker is up and running. Next we see a print out of the job script that Dask uses to launch our workers. The settings for this script come from the settings we gave to the `SLURMCluster` function.
+Finally here we see that the worker is up and running.
 ~~~
 #SBATCH -J dask-worker
 #SBATCH -n 1
@@ -111,6 +113,8 @@ Finally here we see that the worker is up and running. Next we see a print out o
 /home/user49/dask/bin/python -m distributed.cli.dask_worker tcp://192.168.0.133:44075 --nthreads 1 --memory-limit 244.14MiB --name dummy-name --nanny --death-timeout 60 --protocol tcp://
 ~~~
 {: .output}
+Above we see a print out of the job script that Dask uses to launch our workers. The settings for this script come from the settings we gave to the `SLURMCluster` function.
+
 ~~~
 =======================================
 Compute time: 12.071980953216553s
@@ -125,7 +129,7 @@ wall clock time:18.724435329437256s
 And finally we get our timings for performing our computations. A little longer than with our pur Dask Delayed code, but lets see how it changes with more cores, or rather more workers.
 
 > ## More cores distributed
-> Given the above `compute-distributed.py` run first with `numWorkers=1` to get a base line then run with `numWorkers=2`, `4`, and `8`.
+> Given the above `compute-distributed.py` run first with `numWorkers=1` to get a base line, then run with `numWorkers=2`, `4`, and `8`.
 > 
 > **HINT:** you don't need to change the `srun python compute-distributed.py&` command as you change the number of workers.
 > > ## Solution
