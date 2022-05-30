@@ -1,6 +1,6 @@
 ---
 title: "Dask Delayed"
-teaching: 15
+teaching: 20
 exercises: 20
 questions:
 - "How do you install Dask Delayed?"

@@ -10,7 +10,6 @@ objectives:
 - ""
 keypoints:
 - ""
-start: true
 ---
 
 At the beginning of this workshop I mentioned that Dask tries to provide familiar interfaces to well known Python libraries. One of these libraries in NumPy lets take a quick look at NumPy now before we turn to the Dask array interface in the next episode, which quite closely mimics the NumPy interface.

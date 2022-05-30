@@ -1,6 +1,6 @@
 ---
 title: "Distributed Computations"
-teaching: 10
+teaching: 15
 exercises: 10
 questions:
 - "How can I avoid the GIL problem?"
@@ -9,6 +9,7 @@ objectives:
 - ""
 keypoints:
 - ""
+start: true
 ---
 
 So we have started to see some of the implications of GIL when we are using Dask. Now we will look at a way to avoid it even if your code needs frequent access to the Python Interpreter (e.g. you haven't converted a bunch of it to C code with something like [Cython](https://cython.org/) I would recommend checking this out by the way as it will make even your parallel Python code run faster).
