@@ -99,10 +99,10 @@ def main():
   #about 380M of random numbers
   dim=50000000
   
-  randomArray=np.random.normal(10.0,0.1,size=dim)
+  randomArray=np.random.normal(0.0,0.1,size=dim)
   
   start=time.time()
-  mean=np.mean(randomArray)
+  mean=randomArray.mean()
   computeTime=elapsed(start)
   
   print("mean is "+str(mean))

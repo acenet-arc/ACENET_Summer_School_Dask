@@ -65,7 +65,7 @@ def main():
   client=Client(cluster)
 
   #create the workers
-  cluster.scale(numWorkers)
+  cluster.scale(jobs=numWorkers)
 
   #sleep a little bit for workers to create and
   #check in with the scheduler
@@ -74,6 +74,9 @@ def main():
   start=time.time()
   sumParts.compute()
   computeTime=elapsed(start)
+
+  client.close()
+  cluster.close()
 ...
 ~~~
 {: .language-python}
@@ -82,7 +85,7 @@ def main():
 
 In the above script we have added a few bits. We have imported `SLURMCluster` which allows us to submit jobs to create independent Dask workers and we have imported the Dask `Client` so that we can tell it to use the software Dask cluster we create.
 
-We can create some number of workers using the `cluster.scale(numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
+We can create some number of workers using the `cluster.scale(jobs=numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
 
 Lets run our new script, this time the computation is all done in the workers and not in the job we submit with the `srun` command. There is no need to change the number of CPUs we request as that is all taken care of by changing the `numWorkers` variable. Lets also immediately run the `sqcm` command to see what jobs we have running and frequently afterwards to see how Dask spawns new workers for us.
 ~~~
@@ -182,33 +185,3 @@ And finally we get our timings for performing our computations. A little longer 
 > Now we are getting some true parallelism. Notice how more than 4 workers doesn't improve things, why is that?
 > {: .solution}
 {: .challenge}
-
-<!--
-
-
-[distributed, multiprocessing, processes, single-threaded, sync, synchronous, threading, threads]
-
-- single thread
-  - no parallelism
-  - executes in computation sequentially in current thread
-  - useful for debugging
-
-- threads
-  - default choice
-  - works well for code that spends a lot of time NOT executing Python code due to GIL
-  - e.g. i/o, compiled C code like Numpy, Pandas, Scikit-Learn, etc.
-
-- Processes
-  - works well for code that spends a lot of time executing Python code
-  - each process has its own Python interpreter
-  - takes longer to start up than threads
-
-- distributed
-  - useful for asynchronous and larger workloads
-  - can be used on a single machine or scaled out to many machines
-  - must deploy a dask cluster
-  - launch multiple workers
-  (launch dask-schedular, and dask-workers registered with schedular)
-  - dask mpi? Do I want to talk about this? Need to provide a schedular_file.json file what is that?
-  
--->

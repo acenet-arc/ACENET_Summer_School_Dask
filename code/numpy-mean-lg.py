@@ -4,16 +4,15 @@ import numpy as np
 def elapsed(start):
   return str(time.time()-start)+"s"
 def main():
-  
-  #about 380M of random numbers
-  dim=50000000
-  
-  randomArray=np.random.normal(0.0,0.1,size=dim)
-  
+
+  #about 6G of random numbers
+  dim=50000000*16
+
   start=time.time()
+  randomArray=np.random.normal(0.0,0.1,size=dim)
   mean=randomArray.mean()
   computeTime=elapsed(start)
-  
+
   print("mean is "+str(mean))
   print()
   print("==================================")

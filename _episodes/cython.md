@@ -1,7 +1,7 @@
 ---
 title: "Cython"
 teaching: 15
-exercises: 10
+exercises: 15
 questions:
 - "How slow is Python?"
 - "Can I make my Python code faster?"
@@ -161,11 +161,11 @@ $ nano cysum.pyx
 {: .language-bash}
 <div class="gitfile" markdown="1">
 ~~~
-cpdef float sumnum(int n):
-  cdef float result=0.0
+cpdef double sumnum(int n):
+  cdef double result=0.0
   cdef int i
   for i in range(n):
-    result+=float(i)
+    result+=i
   return result
 ~~~
 {: .language-python}
@@ -224,20 +224,20 @@ def main():
 [dosum_driver.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/dosum_driver.py)
 </div>
 ~~~
-$ srun nano dosum_driver.py
+$ srun python dosum_driver.py
 ~~~
 {: .language-bash}
 ~~~
-pysum result=799999980000000.0 computed in 5.123960018157959s
-cysum result=995504632627200.0 computed in 0.17841768264770508s
+pysum result=799999980000000.0 computed in 5.7572033405303955s
+cysum result=799999980000000.0 computed in 0.11868977546691895s
 
 ----------------------------------------
-wall clock time:5.302709341049194s
+wall clock time:5.876289129257202s
 ----------------------------------------
 ~~~
 {: .output}
 
-Ok, so our Cython version is much faster, 5.12/0.17=30.12, so slightly more than 30 times faster. That's a pretty nice speed up for not a lot of work.
+Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times faster**. That's a pretty nice speed up for not a lot of work.
 
 > ## Cythonize our compute-distributed.py script
 > In the previous episode we had created a script that parallelized our `computePart` function across multiple distributed Dask workers. Lets now Cythonize that function to improve our performance even further to see if we can get below that approximately 3.4s of compute time when running with 4 workers having one core each.
