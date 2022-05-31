@@ -1,7 +1,7 @@
 ---
 title: "NumPy"
 teaching: 10
-exercises: 5
+exercises: 10
 questions:
 - "Why are NumPy arrays faster than lists?"
 - "How do you create NumPy arrays?"
@@ -12,25 +12,13 @@ keypoints:
 - ""
 ---
 
-At the beginning of this workshop I mentioned that Dask tries to provide familiar interfaces to well known Python libraries. One of these libraries in NumPy lets take a quick look at NumPy now before we turn to the Dask array interface in the next episode, which quite closely mimics the NumPy interface.
+At the beginning of this workshop I mentioned that Dask tries to provide familiar interfaces to well known Python libraries. One of these libraries is NumPy, lets take a quick look at NumPy now before we turn to the Dask array interface in the next episode, which quite closely mimics the NumPy interface.
 
-NumPy, or Numerical Python, is a Python library used for working with arrays and performing operations on them. Python's main data structure for managing groups of things, including numbers, is the list. Lists are very flexible and support lots of operations such as appending and removing. However they are computationally very slow. NumPy aims to provide an array object that is up to 50x faster than traditional Python lists. NumPy arrays are faster than lists because they are stored at one continuous place in memory so processing large sections of NumPy arrays at once means that much more of the data to be processed is likely to already loaded into caches that the CPUs can operate on quickly.
+NumPy, or Numerical Python, is a Python library used for working with arrays and performing operations on them. Python's main data structure for managing groups of things, including numbers, is the list. Lists are very flexible and support lots of operations such as appending and removing. However they are computationally very slow. **NumPy array object is up to 50x faster than traditional Python lists**. NumPy arrays are faster than lists because they are stored at one continuous place in memory so processing large sections of NumPy arrays at once means that much more of the data to be processed is likely to already loaded into caches that the CPUs can operate on quickly.
 
 NumPy is a Python library written partially in Python, but most of the parts that require fast computations are written in C or C++. NumPy is a free and open source library and the source can be viewed on [github](https://github.com/numpy/numpy) if you like.
 
-To use NumPy you need to install it. Luckily we already have it. If you remember back to the long list of libraries we installed using the `pip` command when installed Dask, `numpy` was included in that list. However, since we are coming back from last day we have to log back into the cluster and re-activate our virtual environment.
-
-~~~
-$ ssh -X <your-username>@pcs.ace-net.training
-$ source ~/dask/bin/activate
-~~~
-{: .language-bash}
-
-Lets also re-do our `squeue` alias as we will want that. To make this permenant you could put this line into your `~/.bashrc` file.
-~~~
-$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
-~~~
-{: .language-bash}
+To use NumPy you need to install it. Luckily we already have it. If you remember back to the long list of libraries we installed using the `pip` command when we installed Dask, `numpy` was included in that list. 
 
 To use numpy in a Python script you would import it as any other module. Then you can create numpy arrays from regular python lists or using other specialized functions for example the [`normal`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html) function which creates an array of values in a normal distribution. The arguments to this function are the centre of the distribution (`0.0` in the code below), the standard deviation, (`0.1` below) and finally the `size` specifies the number of points to generate within that distribution.
 

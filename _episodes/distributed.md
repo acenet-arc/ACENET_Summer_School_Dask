@@ -12,9 +12,23 @@ keypoints:
 start: true
 ---
 
-So we have started to see some of the implications of GIL when we are using Dask. Now we will look at a way to avoid it even if your code needs frequent access to the Python Interpreter (e.g. you haven't converted a bunch of it to C code with something like [Cython](https://cython.org/) I would recommend checking this out by the way as it will make even your parallel Python code run faster).
+So we have started to see some of the implications of GIL when we are using Dask. Now we will look at a way to avoid it even if your code needs frequent access to the Python Interpreter (e.g. you haven't converted a bunch of it to C code with something like [Cython](https://cython.org/) which can seriously improve the performance of Python code even before parallelization).
 
-The basic idea here is to give each run your Python code in a distributed way so that each execution of your code has it's own Python interpreter. This means that there will necessarily be massage passing and coordinating between the different processes running the different Python interpreters. Luckily Dask takes care of all this for us and after a bit of additional setup we can use it with `Delayed` just as we did before but without issues with GIL.
+The basic idea with distributed computations is to give each execution of your Python code it's own Python interpreter. This means that there will necessarily be massage passing and coordinating between the different processes running the different Python interpreters. Luckily Dask takes care of all this for us and after a bit of additional setup we can use it with `Delayed` just as we did before but without issues with GIL.
+
+Since we are coming back from last day we have to log back into the cluster and re-activate our virtual environment.
+
+~~~
+$ ssh -X <your-username>@pcs.ace-net.training
+$ source ~/dask/bin/activate
+~~~
+{: .language-bash}
+
+Lets also re-do our `squeue` alias as we will want that. To make this permanent you could put this line into your `~/.bashrc` file.
+~~~
+$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
+~~~
+{: .language-bash}
 
 Lets start with our previous `compute.py` script and modify it to run in a distributed way.
 

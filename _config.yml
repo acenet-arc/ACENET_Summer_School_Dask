@@ -110,11 +110,12 @@ episode_order:
   - delayed
   - computations
   - distributed
+  - cython
   - numpy
   - array
-  - pandas
-  - dataframes
-  - cython
+  - wrap-up
+#  - pandas
+#  - dataframes
 #  - modules
 #  - derived_types
 #  - extending_types
