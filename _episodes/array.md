@@ -124,10 +124,78 @@ $ feh mydask.png
 
 Here you can see that there are 4 tasks which create 4 array chunks from the `normal` distribution. These chunks are then input to the `mean` function which calculates the mean on each chunk. Finally a `mean` function which aggregates all the means of the chunks together is called to produce the final result.
 
+> ## Array distributed
+> These arrays are getting kind of big and processing them either in parallel or in serial on a single compute node restricts us to nodes that have more than about 7G of memory. Now on real clusters 7G of memory isn't too bad but if arrays get bigger this could easily start to restrict how many of the nodes on the clusters you can run your jobs on to only the fewer more expensive large memory nodes. However, Dask is already processing our arrays in separate chunks on the same node couldn't we distributed it across multiple nodes and reduce our memory requirement for an individual node?
+> 
+> If we wanted to be able to run on computations of large arrays with less memory per compute node could we distributed these computations across multiple nodes? Yes we can using the distributed computing method we saw earlier.
+> 
+> > ## Solution
+> > Start with the `array-mean.py` script we just created and add to it the 
+> > distributed Dask cluster creation code.
+> > ~~~
+> > $ cp array-mean.py array-distributed-mean.py
+> > $ nano array-distributed-mean.py
+> > ~~~
+> > {: .language-bash}
+> > 
+> > ~~~
+> > import time
+> > import dask.array as da
+> > from dask_jobqueue import SLURMCluster
+> > from dask.distributed import Client
+> > ...
+> > def main():
+> > ...
+> >   #memory=6G data / 16chunks x 4 cores per worker =1.5G plus a little extra
+> >   cluster=SLURMCluster(cores=1,memory="2G",walltime='00:05:00')
+> >   client=Client(cluster)
+> >   cluster.scale(numWorkers)
+> >   time.sleep(5)
+> > 
+> >   start=time.time()
+> >   mean=meanDelayed.compute()
+> >   computeTime=elapsed(start)
+> > 
+> >   client.close()
+> >   cluster.close()
+> > ...
+> > ~~~
+> > {: .language-python}
+> > [array-distributed-mean.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/array-distributed-mean.py)
+> > </div>
+> > 
+> > ~~~
+> > $ srun python array-distributed-mean.py&
+> > $ sqcm
+> > ~~~
+> > {: .language-bash}
+> > ~~~
+> >   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
+> >    1748 cpubase_b   python user49  R  0:05     1    1  256M node-sml1
+> >    1749 cpubase_b dask-wor user49  R  0:01     1    1    2G node-sml1
+> >    1750 cpubase_b dask-wor user49  R  0:01     1    1    2G node-sml2
+> >    1751 cpubase_b dask-wor user49  R  0:01     1    1    2G node-mdm1
+> >    1752 cpubase_b dask-wor user49  R  0:01     1    1    2G node-mdm1
+> > ~~~
+> > {: .output}
+> > Each of our workers is only using 2G of memory. While overall we are using 8G+256M of memory each compute node only has to have 2G of memory available, not the whole 7G on a single node that we needed for the serial or multi-threaded processing we did previously.
+> > ~~~
+> > mean is -1.0935938328889444e-06
+> > 
+> > ==================================
+> > compute time: 9.609684467315674s
+> > ==================================
+> > 
+> > 
+> > ----------------------------------------
+> > wall clock time:16.987823486328125s
+> > ----------------------------------------
+> > ~~~
+> > {: .output}
+> > It took a little longer to do the computation than it did when the computing happened all on the same node and there was extra time to create the cluster and wait for it to spin up, but it did allow us to do our computation with less memory per node and that can be very valuable in getting your job through the work queue faster on a production system as large memory nodes are few and very sought after.
+> {: .solution}
+{: .challenge}
 
-TODO:
-* do exercise for distributed array-mean
-* talk about memory usage a bit to help explain why doing this in a distributed way can be nice.
 <!--
 As these NumPy arrays get big it gets harder and harder to fit them into memory. Wouldn't it be nice to be able to split up these arrays and work on them in parallel. 
 
@@ -163,17 +231,6 @@ y.compute()
 ~~~
 {: .python}
 needs MB of memory and less time to execute
-
-[Dask Array Docs][https://docs.dask.org/en/latest/array.html]
- - lists NumPy operations available
-[best practices for Dask array](https://docs.dask.org/en/latest/array-best-practices.html)
-
-
--------------
-* [Data Frames best practices](https://docs.dask.org/en/latest/dataframe-best-practices.html)
-* [Delayed best practices](https://docs.dask.org/en/latest/delayed-best-practices.html)
-* [General best practices](https://docs.dask.org/en/latest/best-practices.html)
-* [Dask examples](https://examples.dask.org)
 
 -->
 

@@ -65,7 +65,7 @@ def main():
   client=Client(cluster)
 
   #create the workers
-  cluster.scale(jobs=numWorkers)
+  cluster.scale(numWorkers)
 
   #sleep a little bit for workers to create and
   #check in with the scheduler
@@ -85,7 +85,7 @@ def main():
 
 In the above script we have added a few bits. We have imported `SLURMCluster` which allows us to submit jobs to create independent Dask workers and we have imported the Dask `Client` so that we can tell it to use the software Dask cluster we create.
 
-We can create some number of workers using the `cluster.scale(jobs=numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
+We can create some number of workers using the `cluster.scale(numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
 
 Lets run our new script, this time the computation is all done in the workers and not in the job we submit with the `srun` command. There is no need to change the number of CPUs we request as that is all taken care of by changing the `numWorkers` variable. Lets also immediately run the `sqcm` command to see what jobs we have running and frequently afterwards to see how Dask spawns new workers for us.
 ~~~

@@ -32,7 +32,7 @@ def main():
   client=Client(cluster)
 
   #create the workers
-  cluster.scale(jobs=numWorkers)
+  cluster.scale(numWorkers)
 
   #sleep a little bit for workers to create and
   #check in with the scheduler
@@ -41,6 +41,9 @@ def main():
   start=time.time()
   sumParts.compute()
   computeTime=elapsed(start)
+
+  client.close()
+  cluster.close()
 
   print()
   print("=======================================")
