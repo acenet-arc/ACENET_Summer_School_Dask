@@ -1,5 +1,5 @@
 ---
-title: "Wrapping UP"
+title: "Wrapping Up"
 teaching: 5
 exercises: 
 questions:
