@@ -27,13 +27,12 @@ On topics we have covered there can be more to learn. Check out these docs.
 * [Dask examples](https://examples.dask.org)
 * [Dask Delayed Docs](https://docs.dask.org/en/stable/delayed.html)
 * [Delayed best practices](https://docs.dask.org/en/latest/delayed-best-practices.html)
-* [Dask Array Docs][https://docs.dask.org/en/latest/array.html]
+* [Dask Array Docs](https://docs.dask.org/en/latest/array.html)
 * [Best practices for Dask array](https://docs.dask.org/en/latest/array-best-practices.html)
 
 
 There are also some main features of Dask we didn't talk about.
 
-* [Dask DataFrames](https://docs.dask.org/en/stable/dataframe.html) which provide a [Pandas](https://pandas.pydata.org/) like interface.
-* [Data Frames best practices](https://docs.dask.org/en/latest/dataframe-best-practices.html)
-* [Dask Bag](https://docs.dask.org/en/stable/bag.html) which implements operatios like, map,filter, fold, and groupby on collections of generic Python objects similar to [PyToolz](https://toolz.readthedocs.io/en/latest/) or a Pythonic version of [PySpark](https://spark.apache.org/docs/latest/api/python/).
+* [Dask DataFrames](https://docs.dask.org/en/stable/dataframe.html) which provide a [Pandas](https://pandas.pydata.org/) like interface. See also [Data Frames best practices](https://docs.dask.org/en/latest/dataframe-best-practices.html).
+* [Dask Bag](https://docs.dask.org/en/stable/bag.html) which implements operations like, map,filter, fold, and groupby on collections of generic Python objects similar to [PyToolz](https://toolz.readthedocs.io/en/latest/) or a Pythonic version of [PySpark](https://spark.apache.org/docs/latest/api/python/).
 * [Dask Futures](https://docs.dask.org/en/stable/futures.html) which supports a real-time task framework, similar to `dask.delayed` but is immediate rather than lazy.
