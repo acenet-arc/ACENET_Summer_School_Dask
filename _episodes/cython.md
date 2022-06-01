@@ -141,7 +141,7 @@ def main():
 
 Verify everything still works.
 ~~~
-$ srun python dosum.py
+$ srun python dosum_driver.py
 ~~~
 {: .language-bash}
 ~~~
