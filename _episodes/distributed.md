@@ -9,7 +9,7 @@ objectives:
 - ""
 keypoints:
 - ""
-start: true
+#start: true
 ---
 
 So we have started to see some of the implications of GIL when we are using Dask. Now we will look at a way to avoid it even if your code needs frequent access to the Python Interpreter (e.g. you haven't converted a bunch of it to C code with something like [Cython](https://cython.org/) which can seriously improve the performance of Python code even before parallelization).
