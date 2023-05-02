@@ -1,0 +1,14 @@
+- missed installing "cython" could just roll into the big install with dask. Probably should mention how to install it where we use it. Should probably also do this with other libraries too (e.g. mention how to install them where we use them). Could also probably not install some things like maybe matplot lib. I didn't use this directly might not even be using it indirectly.
+
+- Time was a little tight, but close.  
+- 'pip install cython' was missing?
+- List_mean.py has a funny thing=thing=np.random.normal() should be one “thing”
+- <div> formatting issue on last exercise
+- Timings:
+  - Distributed compute exercises at 22min, end at 36min
+  - Cython exercise at 1:12min end at 1:20min
+  - Numpy end at 1:36min
+  - DaskArray at 1:50min at exercise
+- Too fast typing (give some more pauses)
+- computePart module name conflicts with function name consider renaming to avoid conflict and be more clear about the need to delete the function.
+

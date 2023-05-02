@@ -1,0 +1,7 @@
+- Someone had the question about where to setup a virtual environment, could probably describe that a little better. 1) where it is created, and 2) should it go in home,project,scratch etc.
+- "Compute time" was a little confusing at least one person thought I was measuring cpu time e.g. #cores*execution time consider renaming
+- start time was 1pm, at 1:40pm was at the start of "Delayed"
+- Start of "Delayed" exercise at 2pm
+- 2:53pm @ end of "real computations" stopped there.
+- missing "import time" in one of the exercies files
+- Someone had the question "why is it called Dask "delayed"?" I think around the time we were about to start the exercise, may want to emphasis this a little more.
