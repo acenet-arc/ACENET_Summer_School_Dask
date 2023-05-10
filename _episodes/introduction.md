@@ -12,7 +12,7 @@ keypoints:
 start: true
 ---
 
-Dask is a flexible library for parallel computing in Python. Python code is (or was) a bit notoriously difficult to parallelize because of something called the global interpreter lock ([GIL](https://realpython.com/python-gil/)) which essentially meant Python couldn't be multi-threaded within a single process. Dask was started because of a desire to parallelize the existing SciPy stack and libraries spun off from that. It started by attempting to parallelize the NumPY library because it forms the basis on which SciPy was built. NumPy was also difficult to use when working with large datasets that didn't fit nicely into memory but that fit nicely onto disk. For more details on the origins of Dask read this [blog post](https://coiled.io/blog/history-dask/#:~:text=Dask%20was%20originally%20developed%20at,accelerate%20computation%20in%20open%20source.) by Matt Rocklin who committed the first commit of Dask.
+Dask is a flexible library for parallel computing in Python. Python code is (or was) a bit notoriously difficult to parallelize because of something called the global interpreter lock ([GIL](https://realpython.com/python-gil/)) which essentially meant Python couldn't be multi-threaded within a single process. Dask was started because of a desire to parallelize the existing SciPy stack and libraries spun off from that. It started by attempting to parallelize the NumPY library because it forms the basis on which SciPy was built. NumPy was also difficult to use when working with large datasets that didn't fit nicely into memory but that fit nicely onto disk.
 
 ## Dask tries to be familiar
 
