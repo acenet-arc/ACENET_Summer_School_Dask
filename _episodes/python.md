@@ -22,7 +22,7 @@ $ xclock
 ~~~
 {: .language-bash}
 
-You should now be connected to the training cluster and hopefully if you have an x11 server running you should see a little analog clock pop up in a window. If you can't get x11 forwarding working, it isn't the end of the world. There is one small exercise you will have look at the solution to see the graph.
+You should now be connected to the training cluster and hopefully if you have an x11 server running you should see a little analog clock pop up in a window. If you can't get x11 forwarding working, it isn't the end of the world. There is one small exercise where you will have look at the solution to see the graph rather than viewing the image yourself.
 
 Next load the Python module.
 ~~~
@@ -150,6 +150,8 @@ $ nano pre-dask.py
 
 <div class="gitfile" markdown="1">
 ~~~
+import time
+
 def elapsed(start):
   return str(time.time()-start)+"s"
 

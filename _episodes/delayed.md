@@ -157,8 +157,8 @@ def main():
   ...
   z=dask.delayed(add)(x,y)
   z.visualize()
-  result=z.compute()
-  print("result="+str(result))
+  #result=z.compute()
+  #print("result="+str(result))
 ...
 ~~~
 {: .language-python}

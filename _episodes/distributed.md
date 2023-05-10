@@ -26,7 +26,7 @@ $ source ~/dask/bin/activate
 
 Lets also re-do our `squeue` alias as we will want that. To make this permanent you could put this line into your `~/.bashrc` file.
 ~~~
-$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
+$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.7u %.2t %.5M %.5D %.4C %.5m %N'"
 ~~~
 {: .language-bash}
 
@@ -128,7 +128,7 @@ Finally here we see that the worker is up and running.
 #SBATCH --mem=245M
 #SBATCH -t 00:05:00
 
-/home/user49/dask/bin/python -m distributed.cli.dask_worker tcp://192.168.0.133:44075 --nthreads 1 --memory-limit 244.14MiB --name dummy-name --nanny --death-timeout 60 --protocol tcp://
+/home/user49/dask/bin/python -m distributed.cli.dask_worker tcp://192.168.0.133:44075 --nthreads 1 --memory-limit 244.14MiB --name dummy-name --nanny --death-timeout 60
 ~~~
 {: .output}
 Above we see a print out of the job script that Dask uses to launch our workers. The settings for this script come from the settings we gave to the `SLURMCluster` function.

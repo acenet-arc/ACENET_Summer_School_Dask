@@ -156,7 +156,7 @@ In the last exercise we learned that our "computations" do not parallelize as we
 To make it a little easier to see what is going on in our queue lets create an alias for the `squeue` command with some extra options.
 
 ~~~
-$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.6u %.2t %.5M %.5D %.4C %.5m %N'"
+$ alias sqcm="squeue -u $USER -o'%.7i %.9P %.8j %.7u %.2t %.5M %.5D %.4C %.5m %N'"
 ~~~
 {: .language-bash}
 
