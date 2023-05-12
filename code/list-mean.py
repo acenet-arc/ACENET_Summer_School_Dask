@@ -14,7 +14,7 @@ def main():
   #about 380M of random numbers
   dim=50000000
 
-  randomList=randomArray=np.random.normal(0.0,0.1,size=dim).tolist()
+  randomList=np.random.normal(0.0,0.1,size=dim).tolist()
 
   start=time.time()
   mean=meanOfList(randomList)

@@ -137,7 +137,8 @@ Here you can see that there are 4 tasks which create 4 array chunks from the `no
 > > $ nano array-distributed-mean.py
 > > ~~~
 > > {: .language-bash}
-> > 
+> >
+> > <div class="gitfile" markdown="1">
 > > ~~~
 > > import time
 > > import dask.array as da

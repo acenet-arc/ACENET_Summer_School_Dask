@@ -1,7 +1,7 @@
 ---
 title: "NumPy"
 teaching: 10
-exercises: 10
+exercises: 5
 questions:
 - "Why are NumPy arrays faster than lists?"
 - "How do you create NumPy arrays?"

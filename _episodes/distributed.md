@@ -1,7 +1,7 @@
 ---
 title: "Distributed Computations"
-teaching: 15
-exercises: 10
+teaching: 25
+exercises: 15
 questions:
 - "How can I avoid the GIL problem?"
 - "How can I run multiple Python interpreters at once on one problem?"

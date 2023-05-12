@@ -1,7 +1,7 @@
 ---
 title: "Cython"
-teaching: 15
-exercises: 15
+teaching: 30
+exercises: 10
 questions:
 - "How slow is Python?"
 - "Can I make my Python code faster?"
@@ -15,17 +15,24 @@ keypoints:
 Python is built for the programmer not the computer. What do I mean by that? Python is a very nice programming language to program in. You can get your ideas and algorithms written out very quickly as the Python language manages a lot of the aspects of memory management for you and provides convenient and flexible data structures that just work the way you expect them to without much effort on the part of the programmer to get it right. Part of this comes from the fact that Python is **"duck" typed**. Meaning, if a Python object looks like a duck, quacks like a duck, it is a duck. This means that you can pass different types of objects to a function and as long as that function can access the member functions of that object that it needs to work with it doesn't care what type of object you passed it. This allows you to **write code faster** and greatly increases the 
 **flexibility** and **re-usability** of your Python code. However, **you pay for these benefits with your program run times**.
 
-If you are are not doing any heavy computing this might be just fine, perhaps your CPUs wouldn't be doing that much work anyhow, and waiting another second to get your work done more than offsets the extra hours or days it might take you to write your algorithm out in another language like C of Fortran. However, if you are doing numerically intensive programming this can become a serious problem and is part of the reason why so much computationally intensive programs aren't written in Python.
+If you are are not doing any heavy computing this might be just fine, perhaps your CPUs wouldn't be doing that much work anyhow, and waiting another second to get your work done more than offsets the extra hours or days it might take you to write your algorithm out in another language like C or Fortran. However, if you are doing numerically intensive programming this can become a serious problem and is part of the reason most computationally intensive programs aren't written in Python.
 
 One common solution to this problem is to take the parts of your Python program that are computational intensive and convert them to a compiled language that is much faster. One really nice thing about Python is how well integrated it is with C and C++. 
 
-You can **extend** python with C or C++ by writing modules that you can import and use in your Python scripts in C. This however does take a bit of doing. Most of the extra effort involves creating the interfaces and Python objects to go between the C or C++ code and the Python scripts. For more details about how to do this see these [Python docs on extending Python with C or C++](https://docs.python.org/3/extending/extending.html).
+You can **extend** python with C or C++ by writing modules that you can import and use in your Python scripts. This however does take a bit of doing. Most of the extra effort involves creating the interfaces and Python objects to go between the C or C++ code and the Python scripts. For more details about how to do this see these [Python docs on extending Python with C or C++](https://docs.python.org/3/extending/extending.html).
 
 You can also **embed** Python in a C or C++ application allowing it to call your Python functions from inside that application. This can be very handy for allowing scripting support within applications. For more details about embedding Python in C or C++ applications check these [Python docs on embedding Python in another application](https://docs.python.org/3/extending/embedding.html).
 
 These two approaches are powerful, but do involve being very proficient at C and C++ and take a bit of doing to get working correctly. Though they provide the programmer with a lot of control in how the C or C++ portions of the application interface with the Python portions. If you are willing to give up some of this control for a short cut [**Cython**](https://cython.org/) is a good compromise.
 
-Cython helps you compile your Python code into C code so that you can get the performance benefits of compiled language without having to do too much extra work to get there. Lets take a look at how we can use Cython.
+Cython helps you compile your Python code into C code so that you can get the performance benefits of a compiled language without having to do too much extra work to get there. But before we get too far into Cython, lets install it so it is ready to go.
+
+~~~
+$ pip install cython
+~~~
+{: .language-bash}
+
+Now that Cython is installed lets take a look at how we can use it.
 
 In Python you can declare a variable as below.
 ~~~
@@ -48,7 +55,7 @@ cdef list names
 ~~~
 {: .language-python}
 
-We also need to provide information about the return types and paramters of our functions and weather these functions will be called only from within the converted C code, `cdef`, or only from Python, `def`, or both, `cpdef`.
+We also need to provide information about the return types and parameters of our functions and weather these functions will be called only from within the converted C code, `cdef`, or only from Python, `def`, or both, `cpdef`.
 ~~~
 def test(x): #regular python function, calls from Python only
   ...
