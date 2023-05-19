@@ -185,3 +185,7 @@ And finally we get our timings for performing our computations. A little longer 
 > Now we are getting some true parallelism. Notice how more than 4 workers doesn't improve things, why is that?
 > {: .solution}
 {: .challenge}
+
+> ## Running on busy clusters
+> In this workshop we have been learning about Dask on a relatively quite training cluster. On a production cluster creating a job which then creates other worker jobs to perform computations might not be the best option as it could take quite some time for the worker jobs to start up and connect to the managing job. This time for worker jobs to start up may exceed the original job's time limit. A possible alternative could be to use [Dask-MPI](https://mpi.dask.org/en/latest/) to launch all workers inside a single MPI job.
+{: .callout}
