@@ -2,7 +2,7 @@ import time
 import dask
 from dask_jobqueue import SLURMCluster
 from dask.distributed import Client
-import computePart
+import computePartMod
 
 def elapsed(start):
   return str(time.time()-start)+"s"
@@ -15,7 +15,7 @@ def main():
 
   parts=[]
   for i in range(numParts):
-    part=dask.delayed(computePart.computePart)(size)
+    part=dask.delayed(computePartMod.computePart)(size)
     parts.append(part)
   sumParts=dask.delayed(sum)(parts)
 

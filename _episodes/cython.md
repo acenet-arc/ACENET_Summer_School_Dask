@@ -257,7 +257,7 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > ## Solution
 > > Create a new module file containing our `computePart` function and "Cythonize" it.
 > > ~~~
-> > $ nano computePart.pyx
+> > $ nano computePartMod.pyx
 > > ~~~
 > > {: .language-bash}
 > > <div class="gitfile" markdown="1">
@@ -270,11 +270,11 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > >   return part
 > > ~~~
 > > {: .language-python}
-> > [computePart.pyx](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/computePart.pyx)
+> > [computePartMod.pyx](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/computePartMod.pyx)
 > > </div>
 > > Next create our file describing how we want to build our Cython module for the `computePart` function.
 > > ~~~
-> > $ nano build_computePart.py
+> > $ nano build_computePartMod.py
 > > ~~~
 > > {: .language-bash}
 > > <div class="gitfile" markdown="1">
@@ -282,14 +282,14 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > from distutils.core import setup
 > > from Cython.Build import cythonize
 > > 
-> > setup(ext_modules=cythonize('computePart.pyx'))
+> > setup(ext_modules=cythonize('computePartMod.pyx'))
 > > ~~~
 > > {: .language-python}
-> > [build_computePart.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/build_computePart.py)
+> > [build_computePartMod.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/build_computePartMod.py)
 > > </div>
 > > Then compile it.
 > > ~~~
-> > $ python build_computePart.py build_ext --inplace
+> > $ python build_computePartMod.py build_ext --inplace
 > > ~~~
 > > {: .language-bash}
 > > Finally import our newly cythonized module and call the `computePart` function from it.
@@ -304,7 +304,7 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > import dask
 > > from dask_jobqueue import SLURMCluster
 > > from dask.distributed import Client
-> > import computePart
+> > import computePartMod
 > > ...
 > > def main():
 > > 
@@ -314,7 +314,7 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > 
 > >   parts=[]
 > >   for i in range(numParts):
-> >     part=dask.delayed(computePart.computePart)(size)
+> >     part=dask.delayed(computePartMod.computePart)(size)
 > > ...
 > > ~~~
 > > {: .language-python}
