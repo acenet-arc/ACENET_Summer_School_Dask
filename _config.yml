@@ -12,7 +12,7 @@
 # an: ACENET
 # cc: Compute Canada
 # alliance: Digital Research Alliance of Canada
-# molmodsim: Compute Canada Molecular Simulation Team 
+# molmodsim: Compute Canada Molecular Simulation Team
 # bst: (compatibility) same as `molmodsim`
 carpentry: "an"
 
@@ -72,7 +72,7 @@ instructor_post_survey: "https://www.surveymonkey.com/r/instructor_training_post
 
 
 # Start time in minutes (0 to be clock-independent, 540 to show a start at 09:00 am).
-start_time: 570
+start_time: 840
 
 # Specify that things in the episodes collection should be output.
 collections:
@@ -119,14 +119,14 @@ plugins:
 episode_order:
   - introduction
   - python
-  - delayed
   - break1
+  - delayed
   - computations
-  - lunch_break
+  #- lunch_break
   - distributed
   - cython
-  - numpy
   - break2
+  - numpy
   - array
   - wrap-up
 #  - pandas
