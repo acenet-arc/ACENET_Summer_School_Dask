@@ -219,7 +219,7 @@ We got almost 85% CPU efficiency, not too bad.
 
 > ## CPU efficiency
 > Given what we just learned about how to check on a jobs efficiency, lets
-> re-run our dask jobs with different numbers of cores 1,2,4 and see what the
+> re-run our compute.py jobs with different numbers of cores 1,2,4 and see what the
 > CPU efficiency is.
 > > ## Solution
 > > #### 1 core
