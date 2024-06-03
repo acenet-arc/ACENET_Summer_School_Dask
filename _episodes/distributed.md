@@ -43,150 +43,101 @@ $ nano compute-distributed.py
 ~~~
 import time
 import dask
-from dask_jobqueue import SLURMCluster
-from dask.distributed import Client
+import dask_mpi as dm
+import dask.distributed as dd
 ...
 def main():
-
-  size=40000000
-  numParts=4
-  numWorkers=1
-
-  parts=[]
-  for i in range(numParts):
-    part=dask.delayed(computePart)(size)
-    parts.append(part)
-  sumParts=dask.delayed(sum)(parts)
-
-  #create the "cluster"
-  cluster=SLURMCluster(cores=1,memory="256M",walltime='00:05:00')
-
-  #Show us the job script used to launch the workers
-  print(cluster.job_script())
-  client=Client(cluster)
-
-  #create the workers
-  cluster.scale(numWorkers)
-
-  #sleep a little bit for workers to create and
-  #check in with the scheduler
-  time.sleep(5)
-
-  start=time.time()
-  sumParts.compute()
-  computeTime=elapsed(start)
-
-  client.close()
-  cluster.close()
+  dm.initialize()
+  client=dd.Client()
 ...
 ~~~
 {: .language-python}
 [compute-distributed.py](https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/compute-distributed.py)
 </div>
 
-In the above script we have added a few bits. We have imported `SLURMCluster` which allows us to submit jobs to create independent Dask workers and we have imported the Dask `Client` so that we can tell it to use the software Dask cluster we create.
+In the above script we imported the `dask_mpi` and `dask.distributed` modules. We then call the `initialize()` function from the `dask_mpi` module and create a client from the `dask.distibuted` module. The rest of the script stays as it was, that's it. We can now run our previous code in a distributed way in an MPI environment.
 
-We can create some number of workers using the `cluster.scale(numWorkers)` function. After these setup bits our computation continues as normal with Dask `Delayed`.
+To run in an MPI Job, we have to specify the number of tasks `--ntasks` instead of `--cpus-per-task` as we have been doing (see [Running MPI Jobs](https://docs.alliancecan.ca/wiki/Running_jobs#MPI_job)).
 
-Lets run our new script, this time the computation is all done in the workers and not in the job we submit with the `srun` command. There is no need to change the number of CPUs we request as that is all taken care of by changing the `numWorkers` variable. Lets also immediately run the `sqcm` command to see what jobs we have running and frequently afterwards to see how Dask spawns new workers for us.
+The `initialize()` function we called, actually sets up a number of process for us. It creates a Dask Schedular on MPI rank 0, runs the client script on MPI rank 1, and workers on MPI ranks 2 and above. This means, to have at least one worker, we need to have at least 3 tasks. Or to put it another way, with 3 tasks we will have one worker task running each of our `computePart` function calls.
+
 ~~~
-$ srun python compute-distributed.py&
-$ sqcm
+$ srun --ntasks=3 python compute-distributed.py
 ~~~
 {: .language-bash}
 ~~~
-  JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
-    980 cpubase_b   python user49  R  0:02     1    1  256M node-mdm1
-~~~
-{: .output}
-Here you can just see our first job we submitted.
-~~~
-$ sqcm
-~~~
-{: .language-bash}
-~~~
-  JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
-    981 cpubase_b dask-wor user49 PD  0:00     1    1  245M
-    980 cpubase_b   python user49  R  0:04     1    1  256M node-mdm1
-~~~
-{: .output}
-Here you can see the worker job that Dask spawned for our work is in the `PD` or pending state.
-~~~
-$ sqcm
-~~~
-{: .language-bash}
-~~~
-  JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
-    980 cpubase_b   python user49  R  0:07     1    1  256M node-mdm1
-    981 cpubase_b dask-wor user49  R  0:02     1    1  245M node-mdm1
-~~~
-{: .output}
-Finally here we see that the worker is up and running.
-~~~
-#SBATCH -J dask-worker
-#SBATCH -n 1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=245M
-#SBATCH -t 00:05:00
+...
+2024-06-03 19:22:29,474 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:39851
 
-/home/user49/dask/bin/python -m distributed.cli.dask_worker tcp://192.168.0.133:44075 --nthreads 1 --memory-limit 244.14MiB --name dummy-name --nanny --death-timeout 60
-~~~
-{: .output}
-Above we see a print out of the job script that Dask uses to launch our workers. The settings for this script come from the settings we gave to the `SLURMCluster` function.
-
-~~~
 =======================================
-Compute time: 12.071980953216553s
+result=3199999920000000
+Compute time: 9.414103507995605s
 =======================================
 
 
 ----------------------------------------
-wall clock time:18.724435329437256s
+wall clock time:11.231945753097534s
 ----------------------------------------
+
+2024-06-03 19:22:38,896 - distributed.scheduler - INFO - Receive client connection: Client-a3f38f41-21de-11ef-8d0c-fa163efada25
+2024-06-03 19:22:38,896 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:48638
+...
 ~~~
 {: .output}
-And finally we get our timings for performing our computations. A little longer than with our pur Dask Delayed code, but lets see how it changes with more cores, or rather more workers.
+
+Still getting the same result and about the same compute time as our previous Dask Delayed code, but lets see how it changes as we increase `--ntasks`.
 
 > ## More cores distributed
-> Given the above `compute-distributed.py` run first with `numWorkers=1` to get a base line, then run with `numWorkers=2`, `4`, and `8`.
+> Given the above `compute-distributed.py` run first with `--ntasks=3` to get a base line, then run with `--ntasks=4`, `6`, and `10`.
 > 
-> **HINT:** you don't need to change the `srun python compute-distributed.py&` command as you change the number of workers.
 > > ## Solution
-> > #### numWorkers=1
+> > #### `--ntasks=3`: 1 worker
 > > ~~~
-> > ====================================
-> > Compute time: 12.333828449249268s
-> > ====================================
-> > ~~~
-> > {: .output}
-> > 
-> > #### numWorkers=2
-> > ~~~
-> > ====================================
-> > Compute time= 6.07476544380188s
-> > ====================================
+> > =======================================
+> > result=3199999920000000
+> > Compute time: 9.448347091674805s
+> > =======================================
+> > ----------------------------------------
+> > wall clock time:11.187263250350952s
+> > ----------------------------------------
 > > ~~~
 > > {: .output}
 > > 
-> > #### numWorkers=4
+> > #### `--ntasks=4`: 2 workers
 > > ~~~
-> > ====================================
-> > Compute time= 3.454866409301758s
-> > ====================================
+> > =======================================
+> > result=3199999920000000
+> > Compute time: 4.76196813583374s
+> > =======================================
+> > ----------------------------------------
+> > wall clock time:6.3794050216674805s
+> > ----------------------------------------
 > > ~~~
 > > {: .output}
 > > 
-> > #### numWorkers=8
+> > #### `--ntasks=6`: 4 workers
 > > ~~~
-> > ====================================
-> > Compute time= 3.3805696964263916s
-> > ====================================
+> > =======================================
+> > result=3199999920000000
+> > Compute time: 2.3769724369049072s
+> > =======================================
+> > ----------------------------------------
+> > wall clock time:4.282535791397095s
+> > ----------------------------------------
+> > ~~~
+> > {: .output}
+> > 
+> > #### `--ntasks=10`: 8 workers
+> > ~~~
+> > =======================================
+> > result=3199999920000000
+> > Compute time: 2.432898759841919s
+> > =======================================
+> > ----------------------------------------
+> > wall clock time:4.277429103851318s
+> > ----------------------------------------
 > > ~~~
 > > {: .output}
 > Now we are getting some true parallelism. Notice how more than 4 workers doesn't improve things, why is that?
 > {: .solution}
 {: .challenge}
-
-> ## Running on busy clusters
-> In this workshop we have been learning about Dask on a relatively quite training cluster. On a production cluster creating a job which then creates other worker jobs to perform computations might not be the best option as it could take quite some time for the worker jobs to start up and connect to the managing job. This time for worker jobs to start up may exceed the original job's time limit. A possible alternative could be to use [Dask-MPI](https://mpi.dask.org/en/latest/) to launch all workers inside a single MPI job.
-{: .callout}
