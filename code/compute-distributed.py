@@ -39,7 +39,7 @@ def main():
   time.sleep(5)
 
   start=time.time()
-  sumParts.compute()
+  result=sumParts.compute()
   computeTime=elapsed(start)
 
   client.close()
@@ -47,6 +47,7 @@ def main():
 
   print()
   print("=======================================")
+  print("result="+str(result))
   print("Compute time: "+computeTime)
   print("=======================================")
   print()

@@ -22,11 +22,12 @@ def main():
   sumParts=dask.delayed(sum)(parts)
 
   start=time.time()
-  sumParts.compute()
+  result=sumParts.compute()
   computeTime=elapsed(start)
 
   print()
   print("=======================================")
+  print("result="+str(result))
   print("Compute time: "+computeTime)
   print("=======================================")
   print()

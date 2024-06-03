@@ -14,12 +14,13 @@ start: true
 
 So we have started to see some of the implications of GIL when we are using Dask. Now we will look at a way to avoid it even if your code needs frequent access to the Python Interpreter (e.g. you haven't converted a bunch of it to C code with something like [Cython](https://cython.org/) which can seriously improve the performance of Python code even before parallelization).
 
-The basic idea with distributed computations is to give each execution of your Python code it's own Python interpreter. This means that there will necessarily be massage passing and coordinating between the different processes running the different Python interpreters. Luckily Dask takes care of all this for us and after a bit of additional setup we can use it with `Delayed` just as we did before but without issues with GIL.
+The basic idea with distributed computations is to give each execution of your Python code it's own Python interpreter. This means that there will necessarily be message passing and coordinating between the different processes running the different Python interpreters. Luckily Dask takes care of all this for us and after a bit of additional setup we can use it with `Delayed` just as we did before but without issues with GIL.
 
 Since we are coming back from last day we have to log back into the cluster and re-activate our virtual environment.
 
 ~~~
 $ ssh -X <your-username>@pcs.ace-net.training
+$ module load python mpi4py
 $ source ~/dask/bin/activate
 ~~~
 {: .language-bash}

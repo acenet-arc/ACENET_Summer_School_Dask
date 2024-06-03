@@ -47,11 +47,12 @@ def main():
   sumParts=dask.delayed(sum)(parts)
 
   start=time.time()
-  sumParts.compute()
+  result=sumParts.compute()
   computeTime=elapsed(start)
 
   print()
   print("=======================================")
+  print("result="+str(result))
   print("Compute time: "+computeTime)
   print("=======================================")
   print()
@@ -81,6 +82,7 @@ $ srun --cpus-per-task=1 python compute.py
 ~~~
 
 =======================================
+result=3199999920000000
 Compute time: 11.632155656814575s
 =======================================
 
@@ -104,6 +106,7 @@ wall clock time:11.632789134979248s
 > > {: .language-bash}
 > > ~~~
 > > =======================================
+> > result=3199999920000000
 > > Compute time: 11.632155656814575s
 > > =======================================
 > > 
@@ -121,6 +124,7 @@ wall clock time:11.632789134979248s
 > > {: .language-bash}
 > > ~~~
 > > =======================================
+> > result=3199999920000000
 > > Compute time: 11.144386768341064s
 > > =======================================
 > > 
@@ -138,6 +142,7 @@ wall clock time:11.632789134979248s
 > > {: .language-bash}
 > > ~~~
 > > =======================================
+> > result=3199999920000000
 > > Compute time: 11.241060972213745s
 > > =======================================
 > > 
