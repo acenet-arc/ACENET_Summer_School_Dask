@@ -26,11 +26,13 @@ You should now be connected to the training cluster and hopefully if you have an
 
 Next load the Python module.
 ~~~
-$ module load python
+$ module load python mpi4py
 ~~~
 {: .language-bash}
 
 There is a version of python already available on the login node, but for consistency between clusters it is better to use the python version available through module system. If we wanted we could specify a particular version of the Python module to load, with something like `module load python/3.8.10`. For more information about using modules see the [Alliance documentation on modules](https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en).
+
+We will also later make use of Dask components that depend on the `mpi4py` module, so we will load it now while we are loading the python module.
 
 Next lets create a python virtual environment for our dask work and activate it.
 ~~~

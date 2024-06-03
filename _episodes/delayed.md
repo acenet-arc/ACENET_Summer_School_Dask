@@ -15,11 +15,11 @@ keypoints:
 ## Installing Dask
 Before we can use dask we must install it with the following command on the terminal.
 ~~~
-$ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis requests matplotlib
+$ pip install pandas numpy dask distributed graphviz bokeh dask_jobqueue mimesis requests matplotlib dask-mpi
 ~~~
 {: .language-bash}
 
-This actually installs lots of stuff, not just Dask, but should take around 2 minutes or a bit less. This will install these modules into the virtual environment we setup and are currently working in.
+This actually installs lots of stuff, not just Dask, but should take around 2-3 minutes. This will install these modules into the virtual environment we setup and are currently working in.
 
 ## Using Dask Delayed
 Lets start by looking at the python code we have from the last episode and thinking about what parts could be run in parallel.
