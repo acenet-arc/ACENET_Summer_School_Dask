@@ -1,6 +1,6 @@
 ---
 title: "Distributed Computations"
-teaching: 25
+teaching: 15
 exercises: 15
 questions:
 - "How can I avoid the GIL problem?"
