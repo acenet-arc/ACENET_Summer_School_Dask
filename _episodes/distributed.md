@@ -59,7 +59,7 @@ In the above script we imported the `dask_mpi` and `dask.distributed` modules. W
 
 To run in an MPI Job, we have to specify the number of tasks `--ntasks` instead of `--cpus-per-task` as we have been doing (see [Running MPI Jobs](https://docs.alliancecan.ca/wiki/Running_jobs#MPI_job)).
 
-The `initialize()` function we called, actually sets up a number of process for us. It creates a Dask Schedular on MPI rank 0, runs the client script on MPI rank 1, and workers on MPI ranks 2 and above. This means, to have at least one worker, we need to have at least 3 tasks. Or to put it another way, with 3 tasks we will have one worker task running each of our `computePart` function calls.
+The `initialize()` function we called, actually sets up a number of process for us. It creates a Dask Schedular on MPI rank 0, runs the client script on MPI rank 1, and workers on MPI ranks 2 and above. This means, to have at least one worker, we need to have at least 3 tasks. Or to put it another way, with 3 tasks we will have one worker task running all of our `computePart` function calls.
 
 ~~~
 $ srun --ntasks=3 python compute-distributed.py
