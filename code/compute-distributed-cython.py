@@ -1,17 +1,24 @@
 import time
 import dask
-from dask_jobqueue import SLURMCluster
-from dask.distributed import Client
+import dask_mpi as dm
+import dask.distributed as dd
 import computePartMod
 
 def elapsed(start):
   return str(time.time()-start)+"s"
 
+def computePart(size):
+  part=0
+  for i in range(size):
+    part=part+i
+  return part
+
 def main():
+  dm.initialize(exit=True)
+  client=dd.Client()
 
   size=40000000
   numParts=4
-  numWorkers=4
 
   parts=[]
   for i in range(numParts):
@@ -19,26 +26,13 @@ def main():
     parts.append(part)
   sumParts=dask.delayed(sum)(parts)
 
-  #create the "cluster"
-  cluster=SLURMCluster(cores=1,memory="256M",walltime='00:05:00')
-
-  #Show us the job script used to launch the workers
-  print(cluster.job_script())
-  client=Client(cluster)
-
-  #create the workers
-  cluster.scale(jobs=numWorkers)
-
-  #sleep a little bit for workers to create and
-  #check in with the scheduler
-  time.sleep(5)
-
   start=time.time()
-  sumParts.compute()
+  result=sumParts.compute()
   computeTime=elapsed(start)
 
   print()
   print("=======================================")
+  print("result="+str(result))
   print("Compute time: "+computeTime)
   print("=======================================")
   print()

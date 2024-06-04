@@ -201,7 +201,7 @@ $ python build_cysum.py build_ext --inplace
 ~~~
 {: .language-bash}
 
-Finally lets modify our driver script to use our newly created Cython version of the `sumnum` function and compare it to the old version.
+The `--inplace` tells python to build a shared object, `.so`, file in the current working directory rather than  Finally lets modify our driver script to use our newly created Cython version of the `sumnum` function and compare it to the old version.
 
 ~~~
 $ nano dosum_driver.py
@@ -249,6 +249,8 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > ## Cythonize our compute-distributed.py script
 > In the previous episode we had created a script that parallelized our `computePart` function across multiple distributed Dask workers. Lets now Cythonize that function to improve our performance even further to see if we can get below that approximately 3.4s of compute time when running with 4 workers having one core each.
 >
+> **Hint:** the C `int` data type, is only guaranteed to be 16 bits or larger. However, on most systems it is usually 32 bits. A signed 32 bit integer can represent the largest integer of 2^(32-1)-1=2,147,483,647. However, we know our result is 3,199,999,920,000,000. Which is significantly larger than that maximum. There is a C type `long long` which uses 64 bits to represent integers, which would be more than enough to represent our result (see [climits](https://cplusplus.com/reference/climits/)).
+>
 > If you need a copy of that script you can download it with:
 > ~~~
 > $ wget https://raw.githubusercontent.com/acenet-arc/ACENET_Summer_School_Dask/gh-pages/code/compute-distributed.py
@@ -262,8 +264,8 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > {: .language-bash}
 > > <div class="gitfile" markdown="1">
 > > ~~~
-> > cpdef int computePart(int size):
-> >   cdef int part=0
+> > cpdef long long computePart(int size):
+> >   cdef long long part=0
 > >   cdef int i
 > >   for i in range(size):
 > >     part=part+i
@@ -302,19 +304,22 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > ~~~
 > > import time
 > > import dask
-> > from dask_jobqueue import SLURMCluster
-> > from dask.distributed import Client
+> > import dask_mpi as dm
+> > import dask.distributed as dd
 > > import computePartMod
 > > ...
 > > def main():
+> >   dm.initialize(exit=True)
+> >   client=dd.Client()
 > > 
 > >   size=40000000
 > >   numParts=4
-> >   numWorkers=4
 > > 
 > >   parts=[]
 > >   for i in range(numParts):
 > >     part=dask.delayed(computePartMod.computePart)(size)
+> >     parts.append(part)
+> >   sumParts=dask.delayed(sum)(parts)
 > > ...
 > > ~~~
 > > {: .language-python}
@@ -322,31 +327,48 @@ Ok, so our Cython version is much faster, 5.75/0.12=47.91, so nearly  **48 times
 > > </div>
 > > Lets see the results.
 > > ~~~
-> > $ srun python compute-distributed-cython.py
+> > $ srun --ntasks=3 python compute-distributed-cython.py
 > > ~~~
 > > {: .language-bash}
 > > ~~~
-> > #!/usr/bin/env bash
-> > 
-> > #SBATCH -J dask-worker
-> > #SBATCH -n 1
-> > #SBATCH --cpus-per-task=1
-> > #SBATCH --mem=245M
-> > #SBATCH -t 00:05:00
-> > 
-> > /home/user49/dask/bin/python -m distributed.cli.dask_worker tcp://192.168.0.222:35157 --nthreads 1 --memory-limit 244.14MiB --name dummy-name --nanny --death-timeout 60 --protocol tcp://
-> > 
+> > ...
+> > 2024-06-04 13:30:26,293 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:36209
 > > 
 > > =======================================
-> > Compute time: 0.2513456344604492s
+> > result=3199999920000000
+> > Compute time: 0.05466485023498535s
 > > =======================================
 > > 
+> > ----------------------------------------
+> > wall clock time:1.8323471546173096s
+> > ----------------------------------------
 > > 
-> > ----------------------------------------
-> > wall clock time:6.84865140914917s
-> > ----------------------------------------
+> > 2024-06-04 13:30:26,353 - distributed.scheduler - INFO - Receive client connection: Client-9a637db7-2276-11ef-8426-fa163efada25
+> > ...
 > > ~~~
 > > {: .output}
-> > Now that compute time is down from about the 3.4s to 0.25s, that's a speed up of about 13 times faster. Remember the wall clock time is not super meaningful since we have added a 5s wait to help ensure the workers are all setup and ready before we do our computations.
+> > Now that compute time is down from about the 9.4s with 1 worker down to 0.05s, that's a speed up of about 188 times. Lets now compare our 4 worker cases:
+> > ~~~
+> > $ srun --ntasks=6 python compute-distributed-cython.py
+> > ~~~
+> > {: .language-bash}
+> > ~~~
+> > ...
+> > 2024-06-04 13:34:21,765 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:38105
+> > 
+> > =======================================
+> > result=3199999920000000
+> > Compute time: 0.03722333908081055s
+> > =======================================
+> > 
+> > ----------------------------------------
+> > wall clock time:1.827465534210205s
+> > ----------------------------------------
+> > 
+> > 2024-06-04 13:34:21,809 - distributed.scheduler - INFO - Receive client connection: Client-26bb4be5-2277-11ef-8488-fa163efada25
+...
+> > ~~~
+> > {: .output}
+> > Now with 4 workers, we go from 2.37s to 0.037s or a speed up of 64 times. At this point, the computations are taking significantly less time than everything else (see the nearly identical wall clock times), so unless we did more computations, running in parallel doesn't really matter now that we have compiled our python code with Cython.
 > {: .solution}
 {: .challenge}
