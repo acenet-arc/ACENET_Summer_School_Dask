@@ -127,7 +127,9 @@ Here you can see that there are 4 tasks which create 4 array chunks from the `no
 > ## Array distributed
 > These arrays are getting kind of big and processing them either in parallel or in serial on a single compute node restricts us to nodes that have more than about 7G of memory. Now on real clusters 7G of memory isn't too bad but if arrays get bigger this could easily start to restrict how many of the nodes on the clusters you can run your jobs on to only the fewer more expensive large memory nodes. However, Dask is already processing our arrays in separate chunks on the same node couldn't we distributed it across multiple nodes and reduce our memory requirement for an individual node?
 > 
-> If we wanted to be able to run on computations of large arrays with less memory per compute node could we distributed these computations across multiple nodes? Yes we can using the distributed computing method we saw earlier.
+> If we wanted to be able to run computations of large arrays with less memory per compute node could we distributed these computations across multiple nodes? Yes we can using the distributed computing method we saw earlier.  
+>
+> **Hint:** When submitting distributed jobs (using an MPI environment) we need to use `--ntasks=N` to get `N` distributed CPUs. With 4 chunks we would want 4 workers, so `--ntasks=6`. Similarly when requesting memory, we have to request it per CPU with `--mem-pre-cpu=2G`.
 > 
 > > ## Solution
 > > Start with the `array-mean.py` script we just created and add to it the 
@@ -142,23 +144,16 @@ Here you can see that there are 4 tasks which create 4 array chunks from the `no
 > > ~~~
 > > import time
 > > import dask.array as da
-> > from dask_jobqueue import SLURMCluster
-> > from dask.distributed import Client
+> > import dask_mpi as dm
+> > import dask.distributed as dd
 > > ...
 > > def main():
-> > ...
-> >   #memory=6G data / 16chunks x 4 cores per worker =1.5G plus a little extra
-> >   cluster=SLURMCluster(cores=1,memory="2G",walltime='00:05:00')
-> >   client=Client(cluster)
-> >   cluster.scale(numWorkers)
-> >   time.sleep(5)
-> > 
-> >   start=time.time()
-> >   mean=meanDelayed.compute()
-> >   computeTime=elapsed(start)
-> > 
-> >   client.close()
-> >   cluster.close()
+> >   dm.initialize()
+> >   client=dd.Client()
+> >   
+> >   #about 6G of random numbers
+> >   dim=50000000*16
+> >   numChunks=4
 > > ...
 > > ~~~
 > > {: .language-python}
@@ -166,72 +161,78 @@ Here you can see that there are 4 tasks which create 4 array chunks from the `no
 > > </div>
 > > 
 > > ~~~
-> > $ srun python array-distributed-mean.py&
-> > $ sqcm
+> > $ srun --ntasks=6 --mem-per-cpu=2G python array-distributed-mean.py
 > > ~~~
 > > {: .language-bash}
 > > ~~~
-> >   JOBID PARTITION     NAME   USER ST  TIME NODES CPUS MIN_M NODELIST
-> >    1748 cpubase_b   python user49  R  0:05     1    1  256M node-sml1
-> >    1749 cpubase_b dask-wor user49  R  0:01     1    1    2G node-sml1
-> >    1750 cpubase_b dask-wor user49  R  0:01     1    1    2G node-sml2
-> >    1751 cpubase_b dask-wor user49  R  0:01     1    1    2G node-mdm1
-> >    1752 cpubase_b dask-wor user49  R  0:01     1    1    2G node-mdm1
-> > ~~~
-> > {: .output}
-> > Each of our workers is only using 2G of memory. While overall we are using 8G+256M of memory each compute node only has to have 2G of memory available, not the whole 7G on a single node that we needed for the serial or multi-threaded processing we did previously.
-> > ~~~
-> > mean is -1.0935938328889444e-06
+> > ...
+> > 2024-06-06 13:50:28,534 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:39087
+> > mean is 1.2003325729765707e-06
 > > 
 > > ==================================
-> > compute time: 9.609684467315674s
+> > compute time: 5.8905346393585205s
 > > ==================================
 > > 
+> > ----------------------------------------
+> > wall clock time:7.741526126861572s
+> > ----------------------------------------
 > > 
-> > ----------------------------------------
-> > wall clock time:16.987823486328125s
-> > ----------------------------------------
+> > 2024-06-06 13:50:34,571 - distributed.scheduler - INFO - Receive client connection: Client-bf5e693a-240b-11ef-a3fc-fa163efada25
+> > ...
 > > ~~~
 > > {: .output}
-> > It took a little longer to do the computation than it did when the computing happened all on the same node and there was extra time to create the cluster and wait for it to spin up, but it did allow us to do our computation with less memory per node and that can be very valuable in getting your job through the work queue faster on a production system as large memory nodes are few and very sought after.
+> > Each of our tasks is only using 2G of memory and these tasks could be on the same node, or spread across different nodes. While overall we are using 2Gx6=12G of memory.
+> > 
 > {: .solution}
 {: .challenge}
 
-<!--
-As these NumPy arrays get big it gets harder and harder to fit them into memory. Wouldn't it be nice to be able to split up these arrays and work on them in parallel. 
-
-
-Might be a nice way to visualize what is going on without doing something too complex to really be able to visualize.
-~~~
-size=4
-chunkFrac=0.5
-x=dask.array.random.random((size,size),chunks=(int(size*chunkFrac),int(size*chunkFrac))
-x.sum().visualize()
-~~~
-{: .python}
-
-
-might be good to compare with just using numpy directly
-
-#### NumPy version
-~~~
-import numpy as np
-x=np.random.normal(10,0.1,size=(20000,20000))#400 million numbers, each 64 bits, total about 3.2GB
-y=x.mean(axis=0)[::100]
-~~~
-{: .python}
-needs GB of memory, and takes more than 10 seconds
-#### Dask array vesrion
-~~~
-import numpy as np
-import dask.array as da
-
-x=da.random.nomral(10,0.1,size(20000,20000),chunks(1000,1000))# 400 million element array each 64 bits, cut into 1000x1000 sized chunks, 8MB/chunk, 20x20 chunks, can perform NumPy-style operations
-y=x.mean(axis=0)[::100]
-y.compute()
-~~~
-{: .python}
-needs MB of memory and less time to execute
-
--->
+> ## Bigger distributed arrays
+> Lets try an even bigger array. Lets multiply our existing dim by `16` so that we have `dim=50000000*16*16` and lets do the same with our `numChunks` so that we have `numChunks=4*16`. With this configuration we will have 6Gx16=96G of numbers and 4x16=64 chunks. Then run with `--ntasks=66` and the same amount of memory per CPU, `--mem-per-cpu=2G`. In total we are asking for 2Gx66=132G, more than we need, but this is OK since anything less than about 4G per CPU is less than the smallest RAM/CPU ratio on all nodes on Alliance clusters.
+> > 
+> > ## Solution
+> > ~~~
+> > $ nano array-distributed-mean.py
+> > ~~~
+> > {: .language-bash}
+> >
+> > ~~~
+> > import time
+> > import dask.array as da
+> > import dask_mpi as dm
+> > import dask.distributed as dd
+> > ...
+> > def main():
+> >   dm.initialize()
+> >   client=dd.Client()
+> >   
+> >   #about 6G of random numbers
+> >   dim=50000000*16*16
+> >   numChunks=4*16
+> > ...
+> > ~~~
+> > {: .language-python}
+> > 
+> > ~~~
+> > $ srun --ntasks=66 --mem-per-cpu=2G python array-distributed-mean.py
+> > ~~~
+> > {: .language-bash}
+> > ~~~
+> > ...
+> > 2024-06-06 14:01:12,390 - distributed.core - INFO - Starting established connection to tcp://192.168.239.99:36127
+> > mean is 3.018765902042423e-07
+> > 
+> > =================================
+> > compute time: 12.445163011550903s
+> > =================================
+> > 
+> > ---------------------------
+> > wall clock time:21.902076482772827s
+> > ---------------------------
+> > 
+> > 2024-06-06 14:01:26,254 - distributed.scheduler - INFO - Receive client connection: Client-43cd0503-240d-11ef-a46b-fa163efada25
+> > ...
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
 
