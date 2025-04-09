@@ -4,19 +4,22 @@ teaching: 15
 exercises: 0
 questions:
 - "What is Dask?"
-- "How does it work?"
+- "What problem is Dask trying to solve?"
+- "How does Dask work?"
 objectives:
-- ""
+- "Know why Dask "
 keypoints:
+- "Dask has a familiar interface, similar to NumPy, Pandas, or PySpark."
+- "Dasks creates task graphs which allow it to schedule independent tasks in parallel."
 - ""
 start: true
 ---
 
-Dask is a flexible library for parallel computing in Python. Python code is (or was) a bit notoriously difficult to parallelize because of something called the global interpreter lock ([GIL](https://realpython.com/python-gil/)) which essentially meant Python couldn't be multi-threaded within a single process. Dask was started because of a desire to parallelize the existing SciPy stack and libraries spun off from that. It started by attempting to parallelize the NumPY library because it forms the basis on which SciPy was built. NumPy was also difficult to use when working with large datasets that didn't fit nicely into memory but that fit nicely onto disk.
+Dask is a flexible library for parallel computing in Python. Python code is (or was) a bit notoriously difficult to parallelize because of something called the global interpreter lock ([GIL](https://realpython.com/python-gil/)) which essentially meant Python couldn't be multi-threaded within a single process. Dask was started because of a desire to parallelize the existing SciPy stack and libraries spun off from that. It started by attempting to parallelize the NumPy library because it forms the basis on which SciPy was built. NumPy was also difficult to use when working with large data sets that didn't fit nicely into memory but that fit nicely onto disk.
 
 ## Dask tries to be familiar
 
-If you are already used to working with python module such as [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), or [PySpark](https://spark.apache.org/docs/latest/api/python/) Dask provides similar interfaces allowing python code already using these modules to be converted to use Dask parallel constructs easily. 
+If you are already used to working with python module such as [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), or [PySpark](https://spark.apache.org/docs/latest/api/python/) Dask provides similar interfaces allowing python code already using these modules to be converted to use Dask parallel constructs easily.
 
 ## How does Dask work?
 
