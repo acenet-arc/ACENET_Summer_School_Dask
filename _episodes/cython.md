@@ -201,7 +201,18 @@ $ python build_cysum.py build_ext --inplace
 ~~~
 {: .language-bash}
 
-The `--inplace` tells python to build a shared object, `.so`, file in the current working directory rather than  Finally lets modify our driver script to use our newly created Cython version of the `sumnum` function and compare it to the old version.
+The `--inplace` tells python to build a shared object, `.so`, file in the current working directory rather than a library directory for compiled modules.
+
+> ## Finding out more
+> To see a list of available options and their descriptions, use the `--help`` option.
+> ~~~
+> $ python build_cysum.py --help build_ext
+> ~~~
+> {: .language-bash}
+{: .callout}
+
+
+Finally lets modify our driver script to use our newly created Cython version of the `sumnum` function and compare it to the old version.
 
 ~~~
 $ nano dosum_driver.py

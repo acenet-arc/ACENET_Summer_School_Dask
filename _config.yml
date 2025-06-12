@@ -124,9 +124,9 @@ episode_order:
   - delayed
   - computations
   #- lunch_break
+  - break2
   - distributed
   - cython
-  - break2
   - numpy
   - array
   - wrap-up
