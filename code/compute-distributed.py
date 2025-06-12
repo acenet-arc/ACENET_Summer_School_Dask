@@ -13,7 +13,7 @@ def computePart(size):
   return part
 
 def main():
-  dm.initialize()
+  dm.initialize(local_directory="/tmp")
   client=dd.Client()
 
   size=40000000
