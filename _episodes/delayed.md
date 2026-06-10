@@ -9,7 +9,9 @@ questions:
 objectives:
 - ""
 keypoints:
-- ""
+- "Used the `delayed` function to wrap function calls and to allow dask to build the task graph."
+- "Visualize the task graph by calling the `visualize` member function of the object returned from the last `delayed` function. The graph will be created in the `mydask.png` file."
+- "To run your dask task graph call the `compute` function on the object returned from the last `delayed` function."
 ---
 
 ## Installing Dask

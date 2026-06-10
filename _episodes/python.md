@@ -7,9 +7,16 @@ questions:
 - "How can you time Python scripts?"
 - "What is a simple way to run a Python script on a compute node?"
 objectives:
-- ""
+- "Setup a virtual environment to install python packages into."
+- "Create a starting python script."
+- "Create functions to allow timing our code."
+- "Run our script on a compute node."
+
 keypoints:
-- ""
+- "A virtual environment isolates python packages allowing easy switching between different packages and versions avoiding conflicts."
+- "Using a main function allows python scripts to be imported later as modules if desired and reuse the functions in other scripts."
+- "`srun` can be used to run jobs on compute nodes."
+- "The Python time module can be used to time sections of code."
 ---
 
 Before we get to working with Dask we need to setup our Python environment, some basic timing of python code, and create a script that does something slightly interesting that we can use as a starting point to work with Dask.
@@ -139,7 +146,7 @@ wall clock time:7.867813110351562e-06s
 ~~~
 {: .output}
 
-This command runs our script on a compute node granting access to a single compute core. The `srun` command is perfect in this training environment but there other, likely better, ways to run the Alliance HPC clusters, for more info see the [Alliances documentation on running jobs](https://docs.alliancecan.ca/wiki/Running_jobs).
+This command runs our script on a compute node granting access to a single compute core. The `srun` command is perfect in this training environment but there are other, likely better, ways to run jobs on the Alliance HPC clusters, for more info see the [Alliances documentation on running jobs](https://docs.alliancecan.ca/wiki/Running_jobs).
 
 # A more interesting script
 To let us see how Dask can be used to parallelize a python script lets first write a bit more interesting python script to parallelize with Dask in the next episode.

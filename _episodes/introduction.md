@@ -6,12 +6,9 @@ questions:
 - "What is Dask?"
 - "What problem is Dask trying to solve?"
 - "How does Dask work?"
-objectives:
-- "Know why Dask "
 keypoints:
 - "Dask has a familiar interface, similar to NumPy, Pandas, or PySpark."
 - "Dasks creates task graphs which allow it to schedule independent tasks in parallel."
-- ""
 start: true
 ---
 

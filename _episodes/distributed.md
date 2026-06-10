@@ -87,6 +87,25 @@ wall clock time:11.231945753097534s
 
 Still getting the same result and about the same compute time as our previous Dask Delayed code, but lets see how it changes as we increase `--ntasks`.
 
+> ## Connection Errors
+> You may see errors like
+> ~~~
+> Traceback (most recent call last):
+>   File "/home/user0574/dask/lib/python3.11/site-packages/distributed/comm/tcp.py", line 298, in write
+>     raise StreamClosedError()
+> tornado.iostream.StreamClosedError: Stream is closed
+> ...
+> 2026-06-09 12:40:52,825 - distributed.client - ERROR - 
+> ConnectionRefusedError: [Errno 111] Connection refused
+> ...
+> During handling of the above exception, another exception occurred:
+> ...
+> asyncio.exceptions.CancelledError
+> ~~~
+> {: .output}
+> This appears to be only an issue with a clean shutdown and the parallelization and calculation still work as expected. With some searching I have found similar known and still open issues see [dask/dask-mpi#94](https://github.com/dask/dask-mpi/issues/94) which resulted in generating this related issue [dask/distributed#7192](https://github.com/dask/distributed/issues/7192). There is also this more recent [dask/distributed#9032](https://github.com/dask/distributed/issues/9032) issues that is also very similar.
+{: .callout}
+
 > ## More cores distributed
 > Given the above `compute-distributed.py` run first with `--ntasks=3` to get a base line, then run with `--ntasks=4`, `6`, and `10`.
 > 
