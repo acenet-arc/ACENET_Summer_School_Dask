@@ -1,6 +1,6 @@
 ---
 title: "Python"
-teaching: 25
+teaching: 20
 exercises: 0
 questions:
 - "What is a virtual environment?"

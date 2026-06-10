@@ -120,12 +120,12 @@ plugins:
 episode_order:
   - introduction
   - python
-  - break1
   - delayed
+  - break1
   - computations
   #- lunch_break
-  - break2
   - distributed
+  - break2
   - cython
   - numpy
   - array

@@ -1,6 +1,6 @@
 ---
 title: "Cython"
-teaching: 30
+teaching: 25
 exercises: 10
 questions:
 - "How slow is Python?"
